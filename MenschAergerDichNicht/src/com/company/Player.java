@@ -1,0 +1,62 @@
+package com.company;
+
+import java.util.Vector;
+
+/**
+ * Created by pille125 on 09.01.17.
+ */
+public class Player {
+    private Vector<Piece> pieces = null;
+    private int homeLocation = -1;
+    private int playerNumber = -1;
+    private String name = null;
+
+    //Constructor
+    public Player(String name, int playerNumber) {
+        this.homeLocation = playerNumber * 10;
+        this.name = name;
+        this.playerNumber = playerNumber;
+        this.pieces = new Vector<Piece>(4);
+
+        for (int i=0; i<4; i++) {
+            this.pieces.add(new Piece(this));
+        }
+    }
+
+    public Vector<Piece> getPieces() {
+        return this.pieces;
+    }
+
+    public int getHomeLocation() {
+        return this.homeLocation;
+    }
+
+    public int getPlayerNumber() {
+        return this.playerNumber;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    //true if player has a piece out of the house
+    public boolean hasPieceOut() {
+        for (int i=0; i<4; i++) {
+            //check if piece is out of house and not finished
+            if ((pieces.elementAt(i).getPosition() > -1) && (pieces.elementAt(i).getPosition() < 40)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //return true if Player has won
+    public boolean hasWon() {
+        for (int i=0; i<4; i++) {
+            if (!pieces.elementAt(i).isFinished()) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
