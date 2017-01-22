@@ -11,6 +11,7 @@ public class Player {
     private int playerNumber = -1;
     private String name = null;
 
+    private Boolean diceRolled = false;
     public Player() {
 
     }
@@ -63,6 +64,13 @@ public class Player {
         return true;
     }
     public int rollDice() {
+        diceRolled = true;
         return (int)(Math.random() * 6 + 1);
+    }
+    public Boolean isDiceRolled() {
+        return diceRolled;
+    }
+    public void moveComplete() {
+        diceRolled = false;
     }
 }

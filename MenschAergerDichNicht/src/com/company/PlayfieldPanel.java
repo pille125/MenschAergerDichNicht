@@ -71,11 +71,17 @@ class PlayfieldPanel extends JPanel implements MouseListener {
                         Game game = Game.getInstance();
                         int roll = game.getPlayerController().getHumanPlayer().rollDice();
                         System.out.println("Der Spieler hat eine " + roll + " gewürfelt" );
+                        if (roll == 6) {
+                            //Wenn möglich muss eine Spielfigur auf die start position
+                        }else {
+                            //warte auf MouseClick (defintition welche Spielfigur sich bewegen soll
+                        }
                     }
                 }
         );
         add(rollDiceButton);
 
+        addMouseListener(this);
 
     }
 
@@ -91,7 +97,7 @@ class PlayfieldPanel extends JPanel implements MouseListener {
         for (int i = 0; i < this.playfield.length; i++) {
             for (int j = 0; j < playfield[i].length; j++) {
                 Color currentColor = getFieldColor(playfield[i][j]);
-                System.out.println("color" + currentColor);
+
                 if (currentColor != null) {
                     g2.setColor(currentColor);
                     g2.fillOval(j * length + length / 10, i * length + length / 10, length - length / 5, length - length / 5);
@@ -198,13 +204,21 @@ class PlayfieldPanel extends JPanel implements MouseListener {
     public void mouseClicked(MouseEvent e) {
         Game game = Game.getInstance();
         if (game.isGameStarted()) {
-            int size = this.getWidth();
-            Point position = new Point(e.getX() * 11 / size, e.getY() * 11 / size);
-            position.setLocation(position.y, position.x);
-            int player = game.getCurrentPlayer();
-            //Eigentlich soll nachdem der Button "Würfeln" gedrückt wurde der nutzer auf die Figur Klicken die sich
-            // bewegen soll und diese soll sich um die Würfelanzahl bewegen
-            //TODO
+            for(Piece piece: game.getPlayerController().getHumanPlayer().getPieces()) {
+                int size = this.getWidth();
+                Point position = new Point(e.getX() * 11 / size, e.getY() * 11 / size);
+                position.setLocation(position.y, position.x);
+                int player = game.getCurrentPlayer();
+                //Eigentlich soll nachdem der Button "Würfeln" gedrückt wurde der nutzer auf die Figur Klicken die sich
+                // bewegen soll und diese soll sich um die Würfelanzahl bewegen
+                if (piece.getPosition() != -1) {
+                    if (this.positionPoints[piece.getPosition()].x == position.y && this.positionPoints[piece.getPosition()].y == position.x) {
+                        System.out.println("test");
+                    }
+                }
+
+                System.out.println(position.y + " " + position.x);
+            }
         }
     }
 
