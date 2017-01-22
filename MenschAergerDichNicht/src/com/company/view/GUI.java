@@ -1,4 +1,6 @@
-package com.company;
+package com.company.view;
+
+import com.company.model.Playfield;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,25 +13,31 @@ public class GUI {
 
     private static GUI gui = null;
 
-    private PlayfieldPanel playfield = null;
+    private PlayfieldPanel playfieldPanel = null;
     private JFrame window = null;
+    private Playfield playfield;
 
-    private GUI() {
+    private GUI(Playfield playfield) {
+        this.playfield = playfield;
+
+        // setup GUI container
         this.window = new JFrame("Mensch Aerger dich nicht!");
         this.window.setMinimumSize(WINDOW_MIN_DIM);
         this.window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        // setup panel in container
         setupPlayfield();
+        window.add(this.playfieldPanel);
 
-        window.add(this.playfield);
+        // render
         window.getContentPane().validate();
         window.getContentPane().repaint();
         //repaintPlayfield();
     }
 
-    public static GUI getGUI(){
-        if(GUI.gui == null){
-            GUI.gui = new GUI();
+    public static GUI getGUI(Playfield playfield) {
+        if(GUI.gui == null) {
+            GUI.gui = new GUI(playfield);
         }
         return GUI.gui;
     }
@@ -41,22 +49,20 @@ public class GUI {
     }
 
     public void repaintPlayfield() {
-        if (this.playfield != null) {
-            this.playfield.repaint();
+        if (this.playfieldPanel != null) {
+            this.playfieldPanel.repaint();
         }
     }
 
     private void setupPlayfield() {
-        this.playfield = new PlayfieldPanel();
+        this.playfieldPanel = new PlayfieldPanel(this.playfield);
 
 
-        int size = Math.min(this.playfield.getWidth(), this.playfield.getHeight());
+        int size = Math.min(this.playfieldPanel.getWidth(), this.playfieldPanel.getHeight());
         Dimension d = new Dimension(size-(size%11),size-(size%11));
-        this.playfield.setPreferredSize(d);
-        this.playfield.setSize(d);
-        this.playfield.validate();
-
-
+        this.playfieldPanel.setPreferredSize(d);
+        this.playfieldPanel.setSize(d);
+        this.playfieldPanel.validate();
     }
 }
 

@@ -1,4 +1,12 @@
-package com.company;
+package com.company.view;
+
+import com.company.controller.Player;
+import com.company.controller.Game;
+import com.company.controller.PlayerController;
+import com.company.model.Piece;
+import com.company.model.Playfield;
+import com.company.model.Tile;
+import com.company.model.TileType;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,15 +20,43 @@ import java.awt.event.MouseListener;
  */
 
 class PlayfieldPanel extends JPanel implements MouseListener {
-    private int[][] playfield = null;
     private Point[] positionPoints = null;
 
     private JButton startButton = null;
     private JButton rollDiceButton = null;
+    private int[][] playfield = null;
 
-    public PlayfieldPanel() {
+    public PlayfieldPanel(Playfield pfModel) {
         this.setBackground(Color.WHITE);
 
+        // read the generated field
+        playfield = new int[pfModel.getSizex()][pfModel.getSizey()];
+
+        // map from model to gui constants
+        for (int i = 0; i < this.playfield.length; i++) {
+            for (int j = 0; j < playfield[i].length; j++) {
+
+                Tile tile = pfModel.getTile(i, j);
+                switch (tile.getType()) {
+
+                    case NONE:
+                        playfield[i][j] = 0;
+                        break;
+                    case WAY:
+                        playfield[i][j] = 1;
+                        break;
+
+                    // TODO: jeder spielfeldtyp sollte andere ids bekommen (und zusätzlich pro player)
+                    case HOME:
+                    case GOAL:
+                    case START:
+                        playfield[i][j] = tile.getPlayerID() + 2;
+                        break;
+                }
+            }
+        }
+
+        /* wenn die genierung klappt, kann das weg
         this.playfield = new int[][]{
                 {2, 2, 0, 0, 1, 1, 3, 0, 0, 3, 3},
                 {2, 2, 0, 0, 1, 3, 1, 0, 0, 3, 3},
@@ -34,6 +70,7 @@ class PlayfieldPanel extends JPanel implements MouseListener {
                 {5, 5, 0, 0, 1, 5, 1, 0, 0, 4, 4},
                 {5, 5, 0, 0, 5, 1, 1, 0, 0, 4, 4}
         };
+        */
 
         this.positionPoints = new Point[]{
                 new Point(4, 0), new Point(4, 1), new Point(4, 2), new Point(4, 3), new Point(4, 4), new Point(3, 4),
@@ -65,6 +102,8 @@ class PlayfieldPanel extends JPanel implements MouseListener {
         this.rollDiceButton.setToolTipText("Würfeln");
         this.rollDiceButton.setEnabled(true);
         this.rollDiceButton.addActionListener(
+                // esko: das sollte hier nicht sein
+                // die Game klasse ist der controller, und der sollte events von der ui bekommen (mvc)
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {

@@ -1,4 +1,6 @@
-package com.company;
+package com.company.controller;
+
+import com.company.model.Piece;
 
 import java.util.Vector;
 

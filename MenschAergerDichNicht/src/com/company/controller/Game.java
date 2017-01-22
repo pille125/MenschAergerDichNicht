@@ -1,4 +1,6 @@
-package com.company;
+package com.company.controller;
+
+import com.company.model.Playfield;
 
 /**
  * Created by pille125 on 22.01.17.

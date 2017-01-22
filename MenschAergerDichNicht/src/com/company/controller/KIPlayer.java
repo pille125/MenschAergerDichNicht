@@ -1,4 +1,6 @@
-package com.company;
+package com.company.controller;
+
+import com.company.controller.Player;
 
 /**
  * Created by pille125 on 21.01.17.
