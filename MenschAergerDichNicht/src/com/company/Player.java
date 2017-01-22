@@ -11,6 +11,9 @@ public class Player {
     private int playerNumber = -1;
     private String name = null;
 
+    public Player() {
+
+    }
     //Constructor
     public Player(String name, int playerNumber) {
         this.homeLocation = playerNumber * 10;
@@ -58,5 +61,8 @@ public class Player {
             }
         }
         return true;
+    }
+    public int rollDice() {
+        return (int)(Math.random() * 6 + 1);
     }
 }

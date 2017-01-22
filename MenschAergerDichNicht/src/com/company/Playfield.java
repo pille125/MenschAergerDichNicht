@@ -10,7 +10,7 @@ public class Playfield {
     private Vector<Piece> fields;
 
     //Constructor
-    private Playfield() {
+    public Playfield() {
         this.fields = new Vector<Piece>(56);
         this.fields.setSize(56);
     }
