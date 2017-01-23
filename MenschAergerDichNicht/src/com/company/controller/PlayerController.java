@@ -12,7 +12,7 @@ public class PlayerController {
 
     public PlayerController() {
         this.allPlayers = new Vector<Player>(4);
-        for (int i=2; i<6; i++){
+        for (int i=1; i<5; i++){
             this.allPlayers.add(new KIPlayer("KI" + i, i, 4));
         }
     }
@@ -20,7 +20,7 @@ public class PlayerController {
     public PlayerController(Player player, int numberOfKIPlayer) {
         this.allPlayers = new Vector<Player>(numberOfKIPlayer);
         this.allPlayers.add(player);
-        for (int i=1; i<numberOfKIPlayer; i++){
+        for (int i=2; i<numberOfKIPlayer + 2; i++){
             this.allPlayers.add(new KIPlayer("KI" + i, i, player.getPieces().size()));
         }
         instance = this;

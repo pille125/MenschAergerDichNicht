@@ -48,13 +48,13 @@ class PlayfieldPanel extends JPanel implements MouseListener {
 
                     // TODO: jeder spielfeldtyp sollte andere ids bekommen (und zusätzlich pro player)
                     case HOME:
-                        playfield[i][j] = tile.getPlayerID();
+                        playfield[i][j] = tile.getPlayerID() + 1;
                         break;
                     case GOAL:
-                        playfield[i][j] = tile.getPlayerID();
+                        playfield[i][j] = tile.getPlayerID() + 1;
                         break;
                     case START:
-                        playfield[i][j] = tile.getPlayerID();
+                        playfield[i][j] = tile.getPlayerID() + 1;
                         break;
                     case TOGOAL:
                         playfield[i][j] = 1;
@@ -254,6 +254,19 @@ class PlayfieldPanel extends JPanel implements MouseListener {
             if (game.getPlayerController().getHumanPlayer().isDiceRolled()) {
                 if (game.getPlayerController().getHumanPlayer().getLastDiceRoll() == 6) {
                     //komm raus
+                }else {
+                    int size = this.getWidth();
+                    Point position = new Point(e.getX() * 11 / size, e.getY() * 11 / size);
+                    position.setLocation(position.y, position.x);
+
+                    for(Piece piece: game.getPlayerController().getHumanPlayer().getPieces()) {
+                        if (piece.getPosition() == -1) {
+
+                        }else if (position.y == this.positionPoints[piece.getPosition()].x && position.y == this.positionPoints[piece.getPosition()].x) {
+                            System.out.println("test");
+                        }
+
+                    }
                 }
             }
 
