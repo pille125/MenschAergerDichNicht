@@ -20,7 +20,7 @@ public class Player {
     }
     //Constructor
     public Player(String name, int playerNumber, int numberOfPieces) {
-        this.homeLocation = playerNumber * 10;
+        this.homeLocation = (playerNumber - 1) * 10;
         this.name = name;
         this.playerNumber = playerNumber;
         this.pieces = new Vector<Piece>(numberOfPieces);
@@ -40,6 +40,16 @@ public class Player {
 
     public int getPlayerNumber() {
         return this.playerNumber;
+    }
+
+    public Boolean putAvailableHomePieceOut() {
+        for (Piece piece : pieces) {
+            if (piece.getPosition() == -1) {
+                piece.goOut();
+                return true;
+            }
+        }
+        return false;
     }
 
     public int getLastDiceRoll() {
@@ -77,6 +87,10 @@ public class Player {
     }
     public Boolean isDiceRolled() {
         return diceRolled;
+    }
+
+    public void setDiceRolled(Boolean diceRolled) {
+        this.diceRolled = diceRolled;
     }
 
     public void moveComplete() {
