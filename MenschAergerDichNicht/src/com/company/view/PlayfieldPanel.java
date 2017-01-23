@@ -167,19 +167,19 @@ class PlayfieldPanel extends JPanel implements MouseListener {
                     Point position = new Point();
                     if (piece.getPosition() == -1) {
                         switch (player.getPlayerNumber()) {
-                            case 0:
-                                position.x = 0;
-                                position.y = 0;
-                                break;
                             case 1:
-                                position.x = 9;
+                                position.x = 0;
                                 position.y = 0;
                                 break;
                             case 2:
                                 position.x = 9;
-                                position.y = 9;
+                                position.y = 0;
                                 break;
                             case 3:
+                                position.x = 9;
+                                position.y = 9;
+                                break;
+                            case 4:
                                 position.x = 0;
                                 position.y = 9;
                                 break;
