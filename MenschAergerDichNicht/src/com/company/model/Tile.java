@@ -7,6 +7,7 @@ public class Tile {
     private TileType type = TileType.NONE;
     private Tile next = null;
     private int playerID = -1;
+    private Tile goal = null;
 
     public Tile() {}
 
@@ -17,6 +18,11 @@ public class Tile {
 
     public Tile setType(TileType type) {
         this.type = type;
+        return this;
+    }
+
+    public Tile setGoal(Tile next) {
+        this.next = next;
         return this;
     }
 

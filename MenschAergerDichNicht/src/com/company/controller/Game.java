@@ -32,7 +32,10 @@ public class Game {
 
     public void playGame() {
         while (gameStarted == true && gameEnded == false) {
-            checkForWin();
+            if (!checkForWin()) {
+                
+            }
+
         }
     }
 
@@ -67,17 +70,16 @@ public class Game {
         }
     }
 
-    public void checkForWin() {
+    public Boolean checkForWin() {
         for (Tile[] tiles : playfield.getAllTiles()) {
             for (Tile tile : tiles) {
                 if (tile.getType() == TileType.GOAL) {
                     //TODO //wie erfolgt die Auswertung auf einen gewinn?Prüfung ob alle pieces eines Spielers im tiletyp goal?
 
-
                 }
             }
         }
-
+        return false;
 
     }
 
