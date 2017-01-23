@@ -250,49 +250,33 @@ class PlayfieldPanel extends JPanel implements MouseListener {
     @Override
     public void mouseClicked(MouseEvent e) {
         Game game = Game.getInstance();
+        int size = this.getWidth();
+        Point position = new Point(e.getX() * 11 / size, e.getY() * 11 / size);
+        position.setLocation(position.y, position.x);
+        int diceRoll = game.getPlayerController().getHumanPlayer().getLastDiceRoll();
+
         if (game.isGameStarted()) {
             if (game.getPlayerController().getHumanPlayer().isDiceRolled()) {
-                if (game.getPlayerController().getHumanPlayer().getLastDiceRoll() == 6) {
-                    //komm raus
+                if (diceRoll == 6) {
+                    game.getPlayerController().getHumanPlayer().putAvailableHomePieceOut();
+                    game.getPlayerController().getHumanPlayer().setDiceRolled(false);
                 }else {
-                    int size = this.getWidth();
-                    Point position = new Point(e.getX() * 11 / size, e.getY() * 11 / size);
-                    position.setLocation(position.y, position.x);
-
-                    for(Piece piece: game.getPlayerController().getHumanPlayer().getPieces()) {
-                        if (piece.getPosition() == -1) {
-
-                        }else if (position.y == this.positionPoints[piece.getPosition()].x && position.y == this.positionPoints[piece.getPosition()].x) {
-                            System.out.println("test");
+                    for (Piece piece : game.getPlayerController().getHumanPlayer().getPieces()) {
+                        if (piece.getPosition() != -1) {
+                            if (positionPoints[piece.getPosition()].equals(position)) {
+                                piece.moveBy(diceRoll);
+                                game.getPlayerController().getHumanPlayer().setDiceRolled(false);
+                            }
                         }
-
                     }
-                }
-            }
 
-
-
-            for(Piece piece: game.getPlayerController().getHumanPlayer().getPieces()) {
-                int size = this.getWidth();
-                Point position = new Point(e.getX() * 11 / size, e.getY() * 11 / size);
-                position.setLocation(position.y, position.x);
-                int player = game.getCurrentPlayer();
-                //Eigentlich soll nachdem der Button "Würfeln" gedrückt wurde der nutzer auf die Figur Klicken die sich
-                // bewegen soll und diese soll sich um die Würfelanzahl bewegen
-                if (game.getPlayerController().getHumanPlayer().isDiceRolled() && game.getPlayerController().getHumanPlayer().getLastDiceRoll() == 6) {
 
                 }
-                if (piece.getPosition() != -1) {
-                    if (this.positionPoints[piece.getPosition()].x == position.x && this.positionPoints[piece.getPosition()].y == position.y) {
-                        System.out.println("test");
-                    }
-                }else {
+            }else {
 
-                }
-
-                System.out.println(position.y + " " + position.x);
             }
         }
+        GUI.getGUI(null).repaintPlayfield();
     }
 
 

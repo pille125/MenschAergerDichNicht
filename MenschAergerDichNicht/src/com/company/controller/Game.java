@@ -11,7 +11,6 @@ import com.company.model.Piece;
  */
 public class Game {
     private Boolean gameStarted = false;
-    private Boolean gameEnded = true;
     private int currentPlayer = 0;
     private PlayerController playerController;
     private Playfield playfield;
@@ -29,16 +28,15 @@ public class Game {
 
     public void startGame() {
         gameStarted = true;
-        gameEnded = false;
+
     }
 
     public void playGame() {
-        while (gameStarted == true && gameEnded == false) {
+        while (gameStarted == true) {
             if (checkForWin() == -1) {
                 //no winner
             }else {
                 gameStarted = false;
-                gameEnded = true;
             }
 
         }
