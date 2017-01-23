@@ -50,7 +50,7 @@ class PlayfieldPanel extends JPanel implements MouseListener {
                     case HOME:
                     case GOAL:
                     case START:
-                        playfield[i][j] = tile.getPlayerID() + 2;
+                        playfield[i][j] = tile.getPlayerID();
                         break;
                 }
             }
@@ -251,7 +251,7 @@ class PlayfieldPanel extends JPanel implements MouseListener {
                 //Eigentlich soll nachdem der Button "Würfeln" gedrückt wurde der nutzer auf die Figur Klicken die sich
                 // bewegen soll und diese soll sich um die Würfelanzahl bewegen
                 if (piece.getPosition() != -1) {
-                    if (this.positionPoints[piece.getPosition()].x == position.y && this.positionPoints[piece.getPosition()].y == position.x) {
+                    if (this.positionPoints[piece.getPosition()].x == position.x && this.positionPoints[piece.getPosition()].y == position.y) {
                         System.out.println("test");
                     }
                 }

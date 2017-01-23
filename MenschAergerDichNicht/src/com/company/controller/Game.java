@@ -1,13 +1,16 @@
 package com.company.controller;
 
 import com.company.model.Playfield;
+import com.company.model.Tile;
+import com.company.model.TileType;
 
 /**
  * Created by pille125 on 22.01.17.
  */
 public class Game {
     private Boolean gameStarted = false;
-    private int currentPlayer;
+    private Boolean gameEnded = true;
+    private int currentPlayer = 0;
     private PlayerController playerController;
     private Playfield playfield;
     private static Game instance;
@@ -24,6 +27,13 @@ public class Game {
 
     public void startGame() {
         gameStarted = true;
+        gameEnded = false;
+    }
+
+    public void playGame() {
+        while (gameStarted == true && gameEnded == false) {
+            checkForWin();
+        }
     }
 
     public static Game getInstance()
@@ -47,6 +57,28 @@ public class Game {
     }
     public Playfield getPlayfield() {
         return playfield;
+    }
+
+    public void nextPlayer() {
+        if (currentPlayer < playerController.getAllPlayers().size()) {
+            currentPlayer++;
+        }else {
+            currentPlayer = 0;
+        }
+    }
+
+    public void checkForWin() {
+        for (Tile[] tiles : playfield.getAllTiles()) {
+            for (Tile tile : tiles) {
+                if (tile.getType() == TileType.GOAL) {
+                    //TODO //wie erfolgt die Auswertung auf einen gewinn?Prüfung ob alle pieces eines Spielers im tiletyp goal?
+
+
+                }
+            }
+        }
+
+
     }
 
 

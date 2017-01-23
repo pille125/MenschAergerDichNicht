@@ -42,6 +42,10 @@ public class Playfield {
         return tiles[x][y];
     }
 
+    public Tile[][] getAllTiles() {
+        return tiles;
+    }
+
     public int getSizex() {
         return sizex;
     }

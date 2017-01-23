@@ -17,10 +17,10 @@ public class PlayerController {
         }
     }
 
-    public PlayerController(Player player) {
-        this.allPlayers = new Vector<Player>(4);
+    public PlayerController(Player player, int numberOfKIPlayer) {
+        this.allPlayers = new Vector<Player>(numberOfKIPlayer);
         this.allPlayers.add(player);
-        for (int i=1; i<4; i++){
+        for (int i=1; i<numberOfKIPlayer; i++){
             this.allPlayers.add(new KIPlayer("KI" + i, i));
         }
         instance = this;

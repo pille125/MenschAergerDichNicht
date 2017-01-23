@@ -18,13 +18,13 @@ public class Player {
 
     }
     //Constructor
-    public Player(String name, int playerNumber) {
+    public Player(String name, int playerNumber, int numberOfPieces) {
         this.homeLocation = playerNumber * 10;
         this.name = name;
         this.playerNumber = playerNumber;
-        this.pieces = new Vector<Piece>(4);
+        this.pieces = new Vector<Piece>(numberOfPieces);
 
-        for (int i=0; i<4; i++) {
+        for (int i=0; i<numberOfPieces; i++) {
             this.pieces.add(new Piece(this));
         }
     }
