@@ -15,7 +15,7 @@ public class Main {
 
         // create the players
         Player player = new Player("Human", 0, 4);
-        PlayerController playerController = new PlayerController(player);
+        PlayerController playerController = new PlayerController(player, 4);
 
         // create the game
         Game game = new Game(playerController, playfield);
