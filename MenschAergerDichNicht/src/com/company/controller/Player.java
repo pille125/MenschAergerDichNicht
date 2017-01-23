@@ -14,6 +14,7 @@ public class Player {
     private String name = null;
 
     private Boolean diceRolled = false;
+    private int lastDiceRoll = 0;
     public Player() {
 
     }
@@ -39,6 +40,10 @@ public class Player {
 
     public int getPlayerNumber() {
         return this.playerNumber;
+    }
+
+    public int getLastDiceRoll() {
+        return this.lastDiceRoll;
     }
 
     public String getName() {
@@ -67,11 +72,13 @@ public class Player {
     }
     public int rollDice() {
         diceRolled = true;
-        return (int)(Math.random() * 6 + 1);
+        lastDiceRoll = (int)(Math.random() * 6 + 1);
+        return lastDiceRoll;
     }
     public Boolean isDiceRolled() {
         return diceRolled;
     }
+
     public void moveComplete() {
         diceRolled = false;
     }

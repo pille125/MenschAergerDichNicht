@@ -9,5 +9,6 @@ public enum TileType {
     START,
     GOAL,
     WAY,
+    TOGOAL,
     NONE
 }

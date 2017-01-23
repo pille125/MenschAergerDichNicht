@@ -48,9 +48,16 @@ class PlayfieldPanel extends JPanel implements MouseListener {
 
                     // TODO: jeder spielfeldtyp sollte andere ids bekommen (und zusätzlich pro player)
                     case HOME:
+                        playfield[i][j] = tile.getPlayerID();
+                        break;
                     case GOAL:
+                        playfield[i][j] = tile.getPlayerID();
+                        break;
                     case START:
                         playfield[i][j] = tile.getPlayerID();
+                        break;
+                    case TOGOAL:
+                        playfield[i][j] = 1;
                         break;
                 }
             }
@@ -113,6 +120,7 @@ class PlayfieldPanel extends JPanel implements MouseListener {
                         if (roll == 6) {
                             //Wenn möglich muss eine Spielfigur auf die start position
                         }else {
+
                             //warte auf MouseClick (defintition welche Spielfigur sich bewegen soll
                         }
                     }
@@ -243,6 +251,14 @@ class PlayfieldPanel extends JPanel implements MouseListener {
     public void mouseClicked(MouseEvent e) {
         Game game = Game.getInstance();
         if (game.isGameStarted()) {
+            if (game.getPlayerController().getHumanPlayer().isDiceRolled()) {
+                if (game.getPlayerController().getHumanPlayer().getLastDiceRoll() == 6) {
+                    //komm raus
+                }
+            }
+
+
+
             for(Piece piece: game.getPlayerController().getHumanPlayer().getPieces()) {
                 int size = this.getWidth();
                 Point position = new Point(e.getX() * 11 / size, e.getY() * 11 / size);
@@ -250,10 +266,15 @@ class PlayfieldPanel extends JPanel implements MouseListener {
                 int player = game.getCurrentPlayer();
                 //Eigentlich soll nachdem der Button "Würfeln" gedrückt wurde der nutzer auf die Figur Klicken die sich
                 // bewegen soll und diese soll sich um die Würfelanzahl bewegen
+                if (game.getPlayerController().getHumanPlayer().isDiceRolled() && game.getPlayerController().getHumanPlayer().getLastDiceRoll() == 6) {
+
+                }
                 if (piece.getPosition() != -1) {
                     if (this.positionPoints[piece.getPosition()].x == position.x && this.positionPoints[piece.getPosition()].y == position.y) {
                         System.out.println("test");
                     }
+                }else {
+
                 }
 
                 System.out.println(position.y + " " + position.x);
