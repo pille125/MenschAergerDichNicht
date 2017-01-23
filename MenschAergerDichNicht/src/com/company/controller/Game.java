@@ -3,6 +3,8 @@ package com.company.controller;
 import com.company.model.Playfield;
 import com.company.model.Tile;
 import com.company.model.TileType;
+import com.company.model.Piece;
+
 
 /**
  * Created by pille125 on 22.01.17.
@@ -32,8 +34,11 @@ public class Game {
 
     public void playGame() {
         while (gameStarted == true && gameEnded == false) {
-            if (!checkForWin()) {
-                
+            if (checkForWin() == -1) {
+                //no winner
+            }else {
+                gameStarted = false;
+                gameEnded = true;
             }
 
         }
@@ -70,17 +75,19 @@ public class Game {
         }
     }
 
-    public Boolean checkForWin() {
-        for (Tile[] tiles : playfield.getAllTiles()) {
-            for (Tile tile : tiles) {
-                if (tile.getType() == TileType.GOAL) {
-                    //TODO //wie erfolgt die Auswertung auf einen gewinn?Prüfung ob alle pieces eines Spielers im tiletyp goal?
-
+    public int checkForWin() {
+        for (Player player: playerController.getAllPlayers()) {
+            Boolean playerWin = true;
+            for (Piece piece : player.getPieces()) {
+                if (piece.isFinished() != true) {
+                    playerWin = false;
                 }
             }
+            if (playerWin == true) {
+                return player.getPlayerNumber();
+            }
         }
-        return false;
-
+        return -1;
     }
 
 
