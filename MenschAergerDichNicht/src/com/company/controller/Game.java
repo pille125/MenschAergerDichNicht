@@ -179,7 +179,7 @@ public class Game {
                 piece.moveBy(1);
                 return true;
             }
-            else if (isValidTarget(piece, diceRoll) {
+            else if (isValidTarget(piece, diceRoll)) {
                 piece.moveBy(diceRoll);
                 return true;
             }
