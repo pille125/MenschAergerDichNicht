@@ -1,4 +1,4 @@
-package com.company.controller;
+package com.company.model;
 
 import com.company.model.Piece;
 import com.company.model.Playfield;

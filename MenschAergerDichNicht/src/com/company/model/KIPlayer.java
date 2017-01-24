@@ -1,6 +1,6 @@
-package com.company.controller;
+package com.company.model;
 
-import com.company.controller.Player;
+import com.company.model.Player;
 import com.company.model.Playfield;
 
 

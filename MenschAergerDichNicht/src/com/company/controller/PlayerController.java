@@ -1,5 +1,8 @@
 package com.company.controller;
 
+import com.company.model.HumanPlayer;
+import com.company.model.Player;
+
 import java.util.Vector;
 
 public class PlayerController {

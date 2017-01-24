@@ -1,7 +1,5 @@
 package com.company.model;
 
-import com.company.controller.Player;
-
 public class Piece {
     private Player owner;
     private Tile tile;

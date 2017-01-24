@@ -1,6 +1,8 @@
 package com.company;
 
 import com.company.controller.*;
+import com.company.model.HumanPlayer;
+import com.company.model.KIPlayer;
 import com.company.model.Playfield;
 import com.company.view.GUI;
 

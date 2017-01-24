@@ -1,9 +1,6 @@
 package com.company.controller;
 
-import com.company.model.Playfield;
-import com.company.model.Piece;
-import com.company.model.Tile;
-import com.company.model.TileType;
+import com.company.model.*;
 import com.company.view.GUI;
 import com.company.view.PlayfieldPanel;
 
@@ -153,6 +150,7 @@ public class Game {
         Tile targetTile = piece.getTargetTile(diceRoll);
 
         return targetTile == null ||  // player would run over last goal tile
+               targetTile.getPiece() == null ||
                targetTile.getPiece().getOwner().getPlayerID() == currentPlayerID; // player would hit himself
     }
 
