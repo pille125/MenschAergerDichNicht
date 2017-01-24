@@ -2,9 +2,6 @@ package com.company.controller;
 
 import java.util.Vector;
 
-/**
- * Created by pille125 on 21.01.17.
- */
 public class PlayerController {
     private static PlayerController instance;
     private Vector<Player> allPlayers = null;

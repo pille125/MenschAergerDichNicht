@@ -1,9 +1,6 @@
 package com.company.controller;
 
-import com.company.model.Piece;
 import com.company.model.Playfield;
-
-import java.util.Vector;
 
 public class HumanPlayer extends Player {
 

@@ -5,13 +5,8 @@ import com.company.model.Playfield;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.EventListener;
 
-/**
- * Created by pille125 on 09.01.17.
- */
+
 public class GUI {
     private static final Dimension WINDOW_MIN_DIM = new Dimension(600,650);
 
@@ -74,5 +69,3 @@ public class GUI {
         }
     }
 }
-
-

@@ -1,11 +1,8 @@
 package com.company.view;
 
-
 import com.company.controller.Game;
-import com.company.model.Piece;
 import com.company.model.Playfield;
 import com.company.model.Tile;
-import com.company.model.TileType;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,12 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-/**
- * Created by pille125 on 09.01.17.
- */
-
 public class PlayfieldPanel extends JPanel implements MouseListener {
-    private Point[] positionPoints = null;
     private JButton startButton = null;
     private JButton rollDiceButton = null;
 
@@ -156,13 +148,5 @@ public class PlayfieldPanel extends JPanel implements MouseListener {
 
     @Override
     public void mouseReleased(MouseEvent e) {
-    }
-
-    public JButton getStartButton() {
-        return startButton;
-    }
-
-    public JButton getRollDiceButton() {
-        return rollDiceButton;
     }
 }

@@ -7,15 +7,10 @@ import com.company.model.TileType;
 import com.company.view.GUI;
 import com.company.view.PlayfieldPanel;
 
-import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 
 
-/**
- * Created by pille125 on 22.01.17.
- */
 public class Game {
 
     private PlayerController playerController;
@@ -54,8 +49,11 @@ public class Game {
 
         // TODO: die mouse klicks werden prinzipiell richtig umgerechnet
         // TODO: allerdings ist getHeight() nicht richtig, wenn das spielfeld nicht genau passt
+        // TODO: (setPreferredDim blödsinn)
         // TODO: die mouse daten gehen bis zum "boden", die tiles aber nicht
-        // TODO: dadurch sind die mouse x leicht verschoben (siehe das println)
+        // TODO: dadurch sind die mouse x leicht verschoben (siehe mit println weiter unten)
+        // TODO: wenn man das fenster händisch so anpasst, daß das spielfeld richtig drinne sitzt,
+        // TODO: stimmen die mausdaten
         int row    = event.getY() * playfield.getNumRows() / panel.getHeight();
         int column = event.getX() * playfield.getNumColumns() / panel.getWidth();
 
@@ -69,7 +67,9 @@ public class Game {
             return;
 
         // TODO: jetzt kannste hier die game logic einbauen, have fun,
-        // TODO: wenn irgendwo exceptions kommen, ist die spiellogik nicht gut genug
+        // TODO: wenn irgendwo exceptions kommen, ist die spiellogik nicht gut genug (really)
+        // TODO: wenn zb ein TIle kein next hat, dann den typ anschauen. HOME-Tiles haben kein next,
+        // TODO: und ein GOAL (das hinterste) auch nicht
         // TODO: man muss hier prüfen, ob ein zug legal ist, nicht in den Piece und Tile klassen
         if (playerController.getHumanPlayer().isDiceRolled()) {
             int diceRoll = playerController.getHumanPlayer().getLastDiceRoll();

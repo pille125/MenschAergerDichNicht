@@ -4,7 +4,6 @@ package com.company.model;
 public class Playfield {
     private static Playfield instance = null;
 
-
     private Tile[][] tiles = null;
     private int numRows = 0;
     private int numColumns = 0;
@@ -44,10 +43,6 @@ public class Playfield {
 
     public Tile getTile(int x, int y) {
         return tiles[x][y];
-    }
-
-    public Tile[][] getAllTiles() {
-        return tiles;
     }
 
     public int getNumRows() {
