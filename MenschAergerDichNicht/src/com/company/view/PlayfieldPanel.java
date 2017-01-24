@@ -3,7 +3,6 @@ package com.company.view;
 import com.company.controller.Game;
 import com.company.model.Playfield;
 import com.company.model.Tile;
-import com.company.model.TileType;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,7 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.geom.Point2D;
+
 
 public class PlayfieldPanel extends JPanel implements MouseListener {
     private JButton startButton = null;
@@ -35,8 +34,6 @@ public class PlayfieldPanel extends JPanel implements MouseListener {
         startButton.setBounds(250,500,100,60);
         startButton.setEnabled(true);
         startButton.setVisible(true);
-
-
         add(startButton);
 
         rollDiceButton = new JButton("Würfeln");
@@ -103,13 +100,6 @@ public class PlayfieldPanel extends JPanel implements MouseListener {
                 gfx2D.setColor(Color.BLACK);
                 gfx2D.drawOval(posx, posy, rad, rad);
 
-
-                if (tile.getType() == TileType.TOGOAL) {
-
-                    int f=4;
-                }
-
-
                 // render pieces on tiles
                 if (tile.getPiece() != null) {
                     paintPiece(gfx2D, tile, i, j, sizePerPiece);
@@ -127,7 +117,6 @@ public class PlayfieldPanel extends JPanel implements MouseListener {
                 }
             }
         }
-
         return new Point(-1, -1);
     }
 

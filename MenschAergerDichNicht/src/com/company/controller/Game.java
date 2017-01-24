@@ -85,10 +85,11 @@ public class Game {
     }
 
     public void startGame() {
-        // TODO: clear all playfield tiles
-        // TODO: reset the players
-
         System.out.println("GAME STARTED");
+
+        for (Player player : playerController.getAllPlayers()) {
+            player.resetPieces();
+        }
 
         // initialize a new game
         gameStarted = true;
@@ -118,8 +119,11 @@ public class Game {
             }
         }
 
-        System.out.println("turn player " + currentPlayerID + " " +
-                (isHumanPlayersTurn ? "HUMAN " : "KI ") + gui.getPlayerColor(currentPlayerID));
+        System.out.println("turn player " +
+                playerController.getAllPlayers().get(currentPlayerID - 1).getName() + " " +
+                (isHumanPlayersTurn ? "HUMAN " : "KI ") +
+                gui.getPlayerColor(currentPlayerID)
+        );
 
         if (isHumanPlayersTurn) {
             return; // mouse and button actions will resolve turn
@@ -138,8 +142,8 @@ public class Game {
             return;
         }
 
-        // fake a mouse click, just choose the first possible piece
-        for (Piece piece : currentPlayer.getPieces()) {
+        // fake a mouse click order
+        for (Piece piece : ((KIPlayer)currentPlayer).getPieceOrderForMove()) {
             if (tryMove(piece)) {
 
                 if (diceRoll == 6) {
@@ -188,7 +192,8 @@ public class Game {
                 }
             }
             // normal move
-            else if (isValidTarget(piece, diceRoll)) {
+            else if (piece.getTile().getType() != TileType.HOME &&
+                    isValidTarget(piece, diceRoll)) {
                 piece.moveBy(diceRoll);
                 return true;
             }

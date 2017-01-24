@@ -29,7 +29,7 @@ public class GUI {
         this.playfield = game.getPlayfield();
 
         // setup GUI container
-        this.window = new JFrame("Mensch Aerger dich nicht!");
+        this.window = new JFrame("Mensch aerger dich nicht!");
         this.window.setMinimumSize(WINDOW_MIN_DIM);
         this.window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -54,7 +54,6 @@ public class GUI {
                 width  - (width % this.playfield.getNumColumns()),
                 height - (height % this.playfield.getNumRows())
         );
-        //this.playfieldPanel.setPreferredSize(dim);
         this.playfieldPanel.setSize(dim);
         this.playfieldPanel.validate();
     }
@@ -63,7 +62,6 @@ public class GUI {
         this.game = game;
         this.window.pack();
         this.window.setVisible(true);
-
     }
 
     public void repaintPlayfield() {

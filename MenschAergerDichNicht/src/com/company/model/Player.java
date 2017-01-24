@@ -69,6 +69,14 @@ public class Player {
         return this.pieces;
     }
 
+    public void resetPieces() {
+        for (Piece piece : pieces) {
+            if (piece.getTile().getType() != TileType.HOME) {
+                setPieceToHome(piece);
+            }
+        }
+    }
+
     public void setPieceToHome(Piece piece) {
         for (Tile homeTile : homeTiles) { // just find a free home tile and set it
 
