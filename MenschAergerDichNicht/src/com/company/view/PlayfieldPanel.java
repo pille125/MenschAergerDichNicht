@@ -3,6 +3,7 @@ package com.company.view;
 import com.company.controller.Game;
 import com.company.model.Playfield;
 import com.company.model.Tile;
+import com.company.model.TileType;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.geom.Point2D;
 
 public class PlayfieldPanel extends JPanel implements MouseListener {
     private JButton startButton = null;
@@ -84,23 +86,49 @@ public class PlayfieldPanel extends JPanel implements MouseListener {
                 if (currentColor == null) // dont paint none tiles
                     continue;
 
+                int posx = j * sizePerPiece + sizePerPiece / 10;
+                int posy = i * sizePerPiece + sizePerPiece / 10;
+                int rad = sizePerPiece - sizePerPiece / 5;
+
+                int radius = sizePerPiece / 2;
+
                 // paint a colored tile with black border
                 gfx2D.setColor(currentColor);
-                gfx2D.fillOval(
-                        j * sizePerPiece + sizePerPiece / 10, i * sizePerPiece + sizePerPiece / 10,
-                        sizePerPiece - sizePerPiece / 5, sizePerPiece - sizePerPiece / 5
-                );
+                gfx2D.fillOval(posx, posy, rad, rad);
                 gfx2D.setColor(Color.BLACK);
-                gfx2D.drawOval(
-                        j * sizePerPiece + sizePerPiece / 10, i * sizePerPiece + sizePerPiece / 10,
-                        sizePerPiece - sizePerPiece / 5, sizePerPiece - sizePerPiece / 5
-                );
+                gfx2D.drawOval(posx, posy, rad, rad);
 
+                // render arrows for debugging
+                if (tile.getNext() != null) {
+                    gfx2D.setColor(Color.BLACK);
+                    Point point = findTilePos(tile.getNext());
+                    gfx2D.drawLine(posx + radius, posy + radius, point.y* sizePerPiece + sizePerPiece / 10, point.x* sizePerPiece + sizePerPiece / 10);
+                }
+                if (tile.getGoal() != null) {
+                    gfx2D.setColor(Color.RED);
+                    Point point = findTilePos(tile.getGoal());
+                    gfx2D.drawLine(posx + radius, posy + radius, point.y* sizePerPiece + sizePerPiece / 10, point.x* sizePerPiece + sizePerPiece / 10);
+                }
+
+                // render pieces on tiles
                 if (tile.getPiece() != null) {
                     paintPiece(gfx2D, tile, i, j, sizePerPiece);
                 }
             }
         }
+    }
+
+    // hack, inperformant
+    private Point findTilePos(Tile tile) {
+        for (int i = 0; i < this.playfield.getNumRows(); i++) {
+            for (int j = 0; j < playfield.getNumColumns(); j++) {
+                if (tile == playfield.getTile(i, j)) {
+                    return new Point(i, j);
+                }
+            }
+        }
+
+        return new Point(-1, -1);
     }
 
     private void paintPiece(Graphics2D gfx2D, Tile tile, int i, int j, int size) {

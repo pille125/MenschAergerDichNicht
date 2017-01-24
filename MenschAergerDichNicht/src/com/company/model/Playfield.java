@@ -35,6 +35,12 @@ public class Playfield {
 
     public void setupTiles() {
         tiles = new Tile[numRows][numColumns];
+
+        for (int i = 0; i < numRows; i++) {
+            for (int j = 0; j < numColumns; j++) {
+                tiles[i][j] = new Tile();
+            }
+        }
     }
 
     public void setTile(int x, int y, Tile tile) {

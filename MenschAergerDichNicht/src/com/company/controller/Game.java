@@ -67,7 +67,7 @@ public class Game {
         if (!clickedTile.hasPiece())
             return;
 
-        // player rolled dice, click on a own piece to move it if legal
+        // player rolled dice, click on a own piece to move if its legal
         Piece clickedPiece = clickedTile.getPiece();
         if (clickedPiece.getOwner() != currentPlayer) // not our piece
             return;
