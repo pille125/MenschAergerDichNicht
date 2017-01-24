@@ -21,11 +21,6 @@ public class Piece {
         return owner;
     }
 
-    //lets the piece out of the house
-    public void goOut() {
-        this.tile = owner.getStartTile();
-    }
-
     // look ahead function, does not change any tile or piece!
     public Tile getTargetTile(int diceRoll) {
         Tile targetTile = tile;
@@ -59,7 +54,8 @@ public class Piece {
             // grab the correct next tile
             if (tile.getType() == TileType.HOME) {
                 tile = owner.getStartTile();
-            } else if (tile.getType() == TileType.TOGOAL) {
+            }
+            else if (tile.getType() == TileType.TOGOAL) {
 
                 if (tile.getPlayerID() == owner.getPlayerID()) { // our to goal switch
                     tile = tile.getGoal();
@@ -78,17 +74,6 @@ public class Piece {
         }
 
         tile.setPiece(this);
-    }
-
-    // move a piece from one tile to another
-    // this is no game move
-    public void move(Tile toTile) {
-        if (toTile.hasPiece()) {
-            throw new Error("handle piece on this tile first");
-        }
-
-        tile.setPiece(null);    // remove piece from this tile
-        toTile.setPiece(this);  // set it to new tile
     }
 
     //return true if piece is close to finish

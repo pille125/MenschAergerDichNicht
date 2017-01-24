@@ -99,6 +99,10 @@ public class Game {
         turn();
     }
 
+    public void endGame(Player player) {
+        System.out.println("Player " + player.getPlayerID() + " has won! kthxbye ...");
+    }
+
     // all in home, no 6
     private boolean cantMoveOut() {
         return diceRoll != 6 && !currentPlayer.hasPieceOut();
@@ -107,15 +111,26 @@ public class Game {
     public void turn() {
         gui.repaintPlayfield();
 
+        for (Player player : playerController.getAllPlayers()) {
+            if (player.hasWon()) {
+                endGame(player);
+                return;
+            }
+        }
+
         System.out.println("turn player " + currentPlayerID + " " +
                 (isHumanPlayersTurn ? "HUMAN " : "KI ") + gui.getPlayerColor(currentPlayerID));
 
-        if (isHumanPlayersTurn)
+        if (isHumanPlayersTurn) {
             return; // mouse and button actions will resolve turn
+        }
+        else {
+            rollDice();
+            turnKI();
+        }
+    }
 
-        // ki here, resolve the move
-        rollDice();
-
+    private void turnKI() {
         // all in home, no 6
         if (diceRoll != 6 && !currentPlayer.hasPieceOut()) {
             prepareNextPlayer();
@@ -138,27 +153,36 @@ public class Game {
         }
         // KI couldnt move with any piece
         prepareNextPlayer();
-    }
+        turn();
 
+    }
     // applies the rules and returns the success
     public boolean tryMove(Piece piece) {
 
-        // player want to move one out
-        if (diceRoll == 6 &&
-                piece.getTile().getType() == TileType.HOME &&
-                isValidTarget(piece, 1)) { // start position special rule
-
-            piece.moveBy(1);
-            return true;
-        }
-
         // no 6 roll
-        if (diceRoll != 6 &&
-                piece.getTile().getType() !=TileType.HOME &&
-                isValidTarget(piece, diceRoll)) {
+        if (diceRoll != 6) {
+
+            // only out pieces and valid moves
+            if (piece.getTile().getType() == TileType.HOME ||
+                    !isValidTarget(piece, diceRoll))
+                return false;
 
             piece.moveBy(diceRoll);
             return true;
+        }
+
+        // 6 roll
+        if (diceRoll == 6) {
+
+            // if start is free, must move on out
+            if (!piece.getOwner().getStartTile().hasPiece()) {
+                piece.moveBy(1);
+                return true;
+            }
+            else if (isValidTarget(piece, diceRoll) {
+                piece.moveBy(diceRoll);
+                return true;
+            }
         }
 
         return false;
@@ -192,11 +216,12 @@ public class Game {
         }
     }
 
+    // checks if its legal for a piece to move to a target tile
     public boolean isValidTarget(Piece piece, int diceRoll) {
         Tile targetTile = piece.getTargetTile(diceRoll);
 
         return targetTile == null ||  // player would run over last goal tile
-               targetTile.getPiece() == null ||
+               targetTile.getPiece() == null ||  // tile is free
                targetTile.getPiece().getOwner().getPlayerID() == currentPlayerID; // player would hit himself
     }
 
@@ -210,7 +235,7 @@ public class Game {
                 }
             }
 
-            if (playerWin == true) {
+            if (playerWin) {
                 return player.getPlayerID();
             }
         }
