@@ -103,17 +103,7 @@ public class PlayfieldPanel extends JPanel implements MouseListener {
 
                     int f=4;
                 }
-                // render arrows for debugging
-                if (tile.getNext() != null) {
-                    gfx2D.setColor(Color.BLACK);
-                    Point point = findTilePos(tile.getNext());
-                    gfx2D.drawLine(posx + radius, posy + radius, point.y* sizePerPiece + sizePerPiece / 10, point.x* sizePerPiece + sizePerPiece / 10);
-                }
-                if (tile.getGoal() != null) {
-                    gfx2D.setColor(Color.RED);
-                    Point point = findTilePos(tile.getGoal());
-                    gfx2D.drawLine(posx + radius, posy + radius, point.y* sizePerPiece + sizePerPiece / 10, point.x* sizePerPiece + sizePerPiece / 10);
-                }
+
 
                 // render pieces on tiles
                 if (tile.getPiece() != null) {
