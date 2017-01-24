@@ -23,25 +23,33 @@ public class Piece {
 
     // look ahead function, does not change any tile or piece!
     public Tile getTargetTile(int diceRoll) {
-        Tile targetTile = tile;
+        Tile targetTile = tile.getNext();
+
         while (diceRoll > 0) {
-
-            // grab the correct next tile
-            if (targetTile.getType() == TileType.HOME) {
-                targetTile = owner.getStartTile();
-            } else if (targetTile.getType() == TileType.TOGOAL) {
-
-                if (targetTile.getPlayerID() == owner.getPlayerID()) { // our to goal switch
-                    targetTile = targetTile.getGoal();
-                } else {
-                    targetTile = targetTile.getNext();
-                }
-            }
             if (targetTile == null) // run over last goal
                 break;
 
+            // grab the correct next tile
+            switch (targetTile.getType()) {
+                case HOME:
+                    targetTile = owner.getStartTile();
+                    break;
+                case TOGOAL:
+                    if (targetTile.getPlayerID() == owner.getPlayerID()) { // our to goal switch
+                        targetTile = targetTile.getGoal();
+                    } else {
+                        targetTile = targetTile.getNext();
+                    }
+                    break;
+                case WAY:
+                case GOAL:
+                case START:
+                    targetTile = targetTile.getNext();
+                    break;
+            }
             diceRoll--;
         }
+
         return targetTile;  // tile to inspect by game logic
     }
 
