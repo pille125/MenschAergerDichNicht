@@ -174,12 +174,20 @@ public class Game {
 
         // 6 roll
         if (diceRoll == 6) {
+            Player owner = piece.getOwner();
 
-            // if start is free, must move on out
-            if (!piece.getOwner().getStartTile().hasPiece()) {
-                piece.moveBy(1);
-                return true;
+            // must move out rule
+            if (owner.hasPieceInHome() &&
+                    !owner.getStartTile().hasPiece()) {
+
+                if (piece.getTile().getType() == TileType.HOME) {
+                    piece.moveBy(1);
+                    return true;
+                } else {
+                    return false;
+                }
             }
+            // normal move
             else if (isValidTarget(piece, diceRoll)) {
                 piece.moveBy(diceRoll);
                 return true;

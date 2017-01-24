@@ -1,12 +1,8 @@
 package com.company.model;
 
-import com.company.model.Piece;
-import com.company.model.Playfield;
-import com.company.model.Tile;
-import com.company.model.TileType;
-
 import java.util.ArrayList;
 import java.util.Vector;
+
 
 public class Player {
 
@@ -102,6 +98,14 @@ public class Player {
             if (!homeTile.hasPiece()) {
                 return true;
             }
+        }
+        return false;
+    }
+
+    public boolean hasPieceInHome() {
+        for (Piece piece : pieces) {
+            if (piece.getTile().getType() == TileType.HOME)
+                return true;
         }
         return false;
     }
