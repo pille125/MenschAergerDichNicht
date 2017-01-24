@@ -70,7 +70,7 @@ playfield.getTile(4, 0).setType(TileType.START).setNext(playfield.getTile(4, 1))
 playfield.getTile(4, 1).setType(TileType.WAY).setNext(playfield.getTile(4, 2));
 playfield.getTile(4, 2).setType(TileType.WAY).setNext(playfield.getTile(4, 3));
 playfield.getTile(4, 3).setType(TileType.WAY).setNext(playfield.getTile(4, 4));
-playfield.getTile(4, 4).setType(TileType.WAY).setNext(playfield.getTile(4, 5));
+playfield.getTile(4, 4).setType(TileType.WAY).setNext(playfield.getTile(3, 4));
 playfield.getTile(4, 5).setType(TileType.GOAL).setPlayerID(2);
 playfield.getTile(4, 6).setType(TileType.WAY).setNext(playfield.getTile(4, 7));
 playfield.getTile(4, 7).setType(TileType.WAY).setNext(playfield.getTile(4, 8));
