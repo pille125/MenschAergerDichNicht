@@ -24,8 +24,8 @@ public class Tile {
         return this;
     }
 
-    public Tile setGoal(Tile next) {
-        this.next = next;
+    public Tile setGoal(Tile goal) {
+        this.goal = goal;
         return this;
     }
     public Tile getGoal() {

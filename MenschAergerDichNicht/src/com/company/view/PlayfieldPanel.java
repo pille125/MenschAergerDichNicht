@@ -98,6 +98,11 @@ public class PlayfieldPanel extends JPanel implements MouseListener {
                 gfx2D.setColor(Color.BLACK);
                 gfx2D.drawOval(posx, posy, rad, rad);
 
+
+                if (tile.getType() == TileType.TOGOAL) {
+
+                    int f=4;
+                }
                 // render arrows for debugging
                 if (tile.getNext() != null) {
                     gfx2D.setColor(Color.BLACK);
