@@ -1,22 +1,28 @@
 package com.company.model;
 
-import com.company.model.GEN_PlayfieldCreator;
-/**
- * Created by pille125 on 09.01.17.
- */
 
-// das spielfeld besteht aus einzelnen feldern (tiles) besitzt aber KEINE spielfiguren (pieces)
-// die werden im game gemanaged
 public class Playfield {
     private static Playfield instance = null;
 
 
     private Tile[][] tiles = null;
-    private int sizex = 0;
-    private int sizey = 0;
+    private int numRows = 0;
+    private int numColumns = 0;
+    private int numPlayers = 0;
+    private int numPiecesPerPlayer[];
 
     //Constructor
-    public Playfield() {
+    private Playfield() {
+
+        numRows = GEN_PlayfieldCreator.getNumRows();
+        numColumns = GEN_PlayfieldCreator.getNumColumns();
+        numPlayers = GEN_PlayfieldCreator.getNumPlayers();
+
+        numPiecesPerPlayer = new int[numPlayers];
+        for (int i=0; i<numPlayers; i++) {
+            numPiecesPerPlayer[i] = GEN_PlayfieldCreator.getNumPiecesPerPlayer(i+1); // i+1 = playerID
+        }
+
         GEN_PlayfieldCreator.createPlayfield(this);
     }
 
@@ -28,10 +34,8 @@ public class Playfield {
         return instance;
     }
 
-    public void setupTiles(int sizex, int sizey) {
-        this.sizex = sizex;
-        this.sizey = sizey;
-        tiles = new Tile[sizex][sizey];
+    public void setupTiles() {
+        tiles = new Tile[numRows][numColumns];
     }
 
     public void setTile(int x, int y, Tile tile) {
@@ -46,12 +50,19 @@ public class Playfield {
         return tiles;
     }
 
-    public int getSizex() {
-        return sizex;
+    public int getNumRows() {
+        return numRows;
     }
 
-    public int getSizey() {
-        return sizey;
+    public int getNumColumns() {
+        return numColumns;
     }
 
+    public int getNumPlayers() {
+        return numPlayers;
+    }
+
+    public int getNumPiecesOfPlayer(int id) {
+        return numPiecesPerPlayer[id - 1];
+    }
 }

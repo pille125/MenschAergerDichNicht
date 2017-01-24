@@ -1,9 +1,13 @@
 package com.company.view;
 
+import com.company.controller.Game;
 import com.company.model.Playfield;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.EventListener;
 
 /**
  * Created by pille125 on 09.01.17.
@@ -13,12 +17,21 @@ public class GUI {
 
     private static GUI gui = null;
 
-    private PlayfieldPanel playfieldPanel = null;
     private JFrame window = null;
-    private Playfield playfield;
+    private PlayfieldPanel playfieldPanel = null;
+    private Game game = null;
+    private Playfield playfield = null;
 
-    private GUI(Playfield playfield) {
-        this.playfield = playfield;
+    public static GUI getGUI(Game game) {
+        if(GUI.gui == null) {
+            GUI.gui = new GUI(game);
+        }
+        return GUI.gui;
+    }
+
+    private GUI(Game game) {
+        this.game = game;
+        this.playfield = game.getPlayfield();
 
         // setup GUI container
         this.window = new JFrame("Mensch Aerger dich nicht!");
@@ -26,7 +39,7 @@ public class GUI {
         this.window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // setup panel in container
-        setupPlayfield();
+        setupPlayfieldPanel();
         window.add(this.playfieldPanel);
 
         // render
@@ -35,14 +48,21 @@ public class GUI {
         //repaintPlayfield();
     }
 
-    public static GUI getGUI(Playfield playfield) {
-        if(GUI.gui == null) {
-            GUI.gui = new GUI(playfield);
-        }
-        return GUI.gui;
+    private void setupPlayfieldPanel() {
+        this.playfieldPanel = new PlayfieldPanel(game, playfield);
+
+        int size = Math.min(this.playfieldPanel.getWidth(), this.playfieldPanel.getHeight());
+        Dimension dim = new Dimension(
+                size - (size % this.playfield.getNumColumns()),
+                size - (size % this.playfield.getNumRows())
+        );
+        this.playfieldPanel.setPreferredSize(dim);
+        this.playfieldPanel.setSize(dim);
+        this.playfieldPanel.validate();
     }
 
-    public void startGUI() {
+    public void startGUI(Game game) {
+        this.game = game;
         this.window.pack();
         this.window.setVisible(true);
 
@@ -52,17 +72,6 @@ public class GUI {
         if (this.playfieldPanel != null) {
             this.playfieldPanel.repaint();
         }
-    }
-
-    private void setupPlayfield() {
-        this.playfieldPanel = new PlayfieldPanel(this.playfield);
-
-
-        int size = Math.min(this.playfieldPanel.getWidth(), this.playfieldPanel.getHeight());
-        Dimension d = new Dimension(size-(size%11),size-(size%11));
-        this.playfieldPanel.setPreferredSize(d);
-        this.playfieldPanel.setSize(d);
-        this.playfieldPanel.validate();
     }
 }
 

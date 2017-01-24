@@ -2,21 +2,21 @@ package com.company.model;
 
 import com.company.controller.Player;
 
-/**
- * Created by pille125 on 09.01.17.
- */
 public class Piece {
     private Player owner;
-    private int position;
+    private Tile tile;
 
     //Constructor
     public Piece(Player owner) {
         this.owner = owner;
-        this.position = -1;
+        this.tile = null;
     }
 
-    public int getPosition() {
-        return position;
+    public Tile getTile() {
+        return tile;
+    }
+    public void setTile(Tile tile) {
+        this.tile = tile;
     }
 
     public Player getOwner() {
@@ -25,36 +25,47 @@ public class Piece {
 
     //lets the piece out of the house
     public void goOut() {
-        position = owner.getHomeLocation();
+        this.tile = owner.getStartTile();
     }
 
     //move piece
     public void moveBy(int diceThrow) {
-        position = position + diceThrow;
+        tile.setPiece(null);
+
+        while (diceThrow > 0) {
+
+            if (tile.getType() == TileType.HOME)
+                tile = owner.getStartTile();
+            else
+                tile = tile.getNext();
+
+            diceThrow--;
+        }
+
+        tile.setPiece(this);
     }
 
     //put piece back to home, if piece was hit
     public void removePiece() {
-        this.position = -1;
+        tile.setPiece(null);
+        owner.setPieceToHome(this);
     }
 
     //return true if piece is close to finish
     public boolean isCloseToFinish() {
-        switch (owner.getPlayerNumber()) {
-            case 0:
-                return (this.position > 39 - 6) && (this.position <= 39);
-            case 1:
-                return (this.position > 9 - 6) && (this.position <= 9);
-            case 2:
-                return (this.position > 19 - 6) && (this.position <= 19);
-            default:
-                return (this.position > 29 - 6) && (this.position <= 29);
+        if (tile.getType() == TileType.GOAL)
+            return false;
+
+        int i = 6;
+        Tile next;
+        while (i > 0) {
+            next = tile.getNext();
+            if (next.getType() == TileType.TOGOAL &&
+                next.getGoal().getPlayerID() == owner.getPlayerID()) {
+                return true;
+            }
+            i--;
         }
+        return false;
     }
-
-    //return true if piece is finished
-    public boolean isFinished() {
-        return position > 39 + (4 * owner.getPlayerNumber());
-    }
-
 }

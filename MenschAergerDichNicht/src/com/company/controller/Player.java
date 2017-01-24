@@ -1,32 +1,67 @@
 package com.company.controller;
 
 import com.company.model.Piece;
+import com.company.model.Playfield;
+import com.company.model.Tile;
+import com.company.model.TileType;
 
+import java.util.ArrayList;
 import java.util.Vector;
 
-/**
- * Created by pille125 on 09.01.17.
- */
 public class Player {
-    private Vector<Piece> pieces = null;
-    private int homeLocation = -1;
-    private int playerNumber = -1;
-    private String name = null;
 
-    private Boolean diceRolled = false;
-    private int lastDiceRoll = 0;
-    public Player() {
+    protected Vector<Piece> pieces = null;
 
-    }
+    protected int playerID = -1;
+    protected String name = null;
+
+    protected Boolean diceRolled = false;
+    protected int lastDiceRoll = 0;
+    protected Tile startTile;
+    protected ArrayList<Tile> homeTiles = new ArrayList<Tile>();
+
     //Constructor
-    public Player(String name, int playerNumber, int numberOfPieces) {
-        this.homeLocation = (playerNumber - 1) * 10;
+    public Player(String name, int playerID, int numPieces, Playfield playfield) {
         this.name = name;
-        this.playerNumber = playerNumber;
-        this.pieces = new Vector<Piece>(numberOfPieces);
+        this.playerID = playerID;
+        this.pieces = new Vector<Piece>(numPieces);
 
-        for (int i=0; i<numberOfPieces; i++) {
+        for (int i=0; i<numPieces; i++) {
             this.pieces.add(new Piece(this));
+        }
+
+        findOwnStartTile(playfield);
+        findOwnHomeTiles(playfield);
+
+        for (int i=0; i<numPieces; i++) {
+            setPieceToHome(new Piece(this));
+        }
+    }
+
+    private void findOwnStartTile(Playfield playfield) {
+        for (int i = 0; i < playfield.getNumRows(); i++) {
+            for (int j = 0; j < playfield.getNumColumns(); j++) {
+                Tile tile = playfield.getTile(i, j);
+
+                if (tile.getPlayerID() == playerID && tile.getType() == TileType.START) {
+                    startTile = tile;
+                    return;
+                }
+            }
+        }
+    }
+
+    private void findOwnHomeTiles(Playfield playfield) {
+        for (int i = 0; i < playfield.getNumRows(); i++) {
+            for (int j = 0; j < playfield.getNumColumns(); j++) {
+                Tile tile = playfield.getTile(i, j);
+
+                if (tile.getPlayerID() == playerID && tile.getType() == TileType.HOME) {
+                    homeTiles.add(tile);
+                    if (homeTiles.size() == pieces.size())
+                        return;
+                }
+            }
         }
     }
 
@@ -34,18 +69,29 @@ public class Player {
         return this.pieces;
     }
 
-    public int getHomeLocation() {
-        return this.homeLocation;
+    public void setPieceToHome(Piece piece) {
+        for (Tile homeTile : homeTiles) { // just find a free home tile and set it
+
+            if (!homeTile.hasPiece()) {
+                homeTile.setPiece(piece);
+                piece.setTile(homeTile);
+                return;
+            }
+        }
     }
 
-    public int getPlayerNumber() {
-        return this.playerNumber;
+    public Tile getStartTile() {
+        return startTile;
+    }
+
+    public int getPlayerID() {
+        return this.playerID;
     }
 
     public Boolean putAvailableHomePieceOut() {
-        for (Piece piece : pieces) {
-            if (piece.getPosition() == -1) {
-                piece.goOut();
+        for (Tile homeTile : homeTiles) {
+            if (homeTile.hasPiece()) {
+                homeTile.getPiece().goOut();
                 return true;
             }
         }
@@ -62,9 +108,8 @@ public class Player {
 
     //true if player has a piece out of the house
     public boolean hasPieceOut() {
-        for (int i=0; i<4; i++) {
-            //check if piece is out of house and not finished
-            if ((pieces.elementAt(i).getPosition() > -1) && (pieces.elementAt(i).getPosition() < 40)) {
+        for (Tile homeTile : homeTiles) {
+            if (!homeTile.hasPiece()) {
                 return true;
             }
         }
@@ -73,13 +118,13 @@ public class Player {
 
     //return true if Player has won
     public boolean hasWon() {
-        for (int i=0; i<4; i++) {
-            if (!pieces.elementAt(i).isFinished()) {
+        for (Piece piece : pieces) {
+            if (piece.getTile().getType() != TileType.GOAL)
                 return false;
-            }
         }
         return true;
     }
+
     public int rollDice() {
         diceRolled = true;
         lastDiceRoll = (int)(Math.random() * 6 + 1);
@@ -96,4 +141,5 @@ public class Player {
     public void moveComplete() {
         diceRolled = false;
     }
+
 }
