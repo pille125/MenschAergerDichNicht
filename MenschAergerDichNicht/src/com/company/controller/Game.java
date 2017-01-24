@@ -221,9 +221,13 @@ public class Game {
     public boolean isValidTarget(Piece piece, int diceRoll) {
         Tile targetTile = piece.getTargetTile(diceRoll);
 
-        return targetTile != null ||  // player would run over last goal tile
-               targetTile.getPiece() == null ||  // tile is free
-               targetTile.getPiece().getOwner().getPlayerID() != currentPlayerID; // player would hit himself
+        if (targetTile == null) // run over last goal
+            return false;
+
+        if (!targetTile.hasPiece()) // free target, nice
+            return true;
+
+        return targetTile.getPiece().getOwner().getPlayerID() != currentPlayerID; // player would hit himself
     }
 
     public int checkForWin() {
