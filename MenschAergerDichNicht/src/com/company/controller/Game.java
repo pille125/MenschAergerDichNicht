@@ -28,7 +28,9 @@ public class Game {
         this.gui = null;
     }
 
-    public void setGUI(GUI gui) { this.gui = gui; }
+    public void setGUI(GUI gui) {
+        this.gui = gui;
+    }
 
     public void onStartButtonClicked(ActionEvent event) {
         gui.disableStartGame();
@@ -36,15 +38,19 @@ public class Game {
     }
 
     public void onRollDiceButtonClicked(ActionEvent event) {
-        rollDice();
         gui.disableDiceRoll();
+        rollDice();
+
+        if (cantMoveOut()) {
+            prepareNextPlayer();
+        }
+        turn();
     }
 
     public void onMouseClicked(MouseEvent event, PlayfieldPanel panel) {
-        if (!isGameStarted())
-            return;
-
-        if (!isDiceRolled)
+        if (!isGameStarted() ||
+                !isHumanPlayersTurn ||
+                !isDiceRolled)
             return;
 
         // grab input
@@ -55,6 +61,8 @@ public class Game {
             return;
 
         System.out.println("row: " + row + " column: " + column);
+
+        // only try a move if player hit a piece
         Tile clickedTile = playfield.getTile(row, column);
         if (!clickedTile.hasPiece())
             return;
@@ -64,22 +72,15 @@ public class Game {
         if (clickedPiece.getOwner() != currentPlayer) // not our piece
             return;
 
-        if (diceRoll == 6 &&
-            clickedPiece.getTile().getType() == TileType.HOME &&
-            isValidMove(clickedPiece, 1)) { // hack to target start pos
+        if (tryMove(clickedPiece)) {
 
-            clickedPiece.moveBy(1);
-            prepareBonusRoll();
-            return;
-        }
-
-        if (diceRoll != 6 &&
-            clickedPiece.getTile().getType() != TileType.HOME &&
-            isValidMove(clickedPiece, diceRoll)) {
-
-            clickedTile.getPiece().moveBy(diceRoll);
-            prepareNextPlayer();
-            return;
+            if (diceRoll == 6) {
+                prepareBonusRoll();
+                turn();
+            } else {
+                prepareNextPlayer();
+                turn();
+            }
         }
     }
 
@@ -87,40 +88,80 @@ public class Game {
         // TODO: clear all playfield tiles
         // TODO: reset the players
 
+        System.out.println("GAME STARTED");
+
         // initialize a new game
         gameStarted = true;
         diceRoll = -1;
         isDiceRolled = false;
         currentPlayerID = 0; // player ids start at 1
         prepareNextPlayer();
-
-        System.out.println("GAME STARTED");
         turn();
     }
 
+    // all in home, no 6
+    private boolean cantMoveOut() {
+        return diceRoll != 6 && !currentPlayer.hasPieceOut();
+    }
+
     public void turn() {
+        gui.repaintPlayfield();
+
         System.out.println("turn player " + currentPlayerID + " " +
-                (isHumanPlayersTurn ? "HUMAN" : "KI") + gui.getPlayerColor(currentPlayerID));
+                (isHumanPlayersTurn ? "HUMAN " : "KI ") + gui.getPlayerColor(currentPlayerID));
+
         if (isHumanPlayersTurn)
             return; // mouse and button actions will resolve turn
 
         // ki here, resolve the move
         rollDice();
 
-        // make a move
+        // all in home, no 6
+        if (diceRoll != 6 && !currentPlayer.hasPieceOut()) {
+            prepareNextPlayer();
+            turn();
+            return;
+        }
+
+        // fake a mouse click, just choose the first possible piece
         for (Piece piece : currentPlayer.getPieces()) {
-            if (isValidMove(piece, diceRoll)) {
+            if (tryMove(piece)) {
 
-                // if its a valid move and a piece is on the to be moved tile
-                // its a legal hit
-                piece.moveBy(diceRoll);
-
-                // TODO: handle bonus roll for ki
-                // prepareBonusRoll();
-
-                prepareNextPlayer();
+                if (diceRoll == 6) {
+                    prepareBonusRoll();
+                } else {
+                    prepareNextPlayer();
+                }
+                turn();
+                return;
             }
         }
+        // KI couldnt move with any piece
+        prepareNextPlayer();
+    }
+
+    // applies the rules and returns the success
+    public boolean tryMove(Piece piece) {
+
+        // player want to move one out
+        if (diceRoll == 6 &&
+                piece.getTile().getType() == TileType.HOME &&
+                isValidTarget(piece, 1)) { // start position special rule
+
+            piece.moveBy(1);
+            return true;
+        }
+
+        // no 6 roll
+        if (diceRoll != 6 &&
+                piece.getTile().getType() !=TileType.HOME &&
+                isValidTarget(piece, diceRoll)) {
+
+            piece.moveBy(diceRoll);
+            return true;
+        }
+
+        return false;
     }
 
     private void prepareBonusRoll () {
@@ -137,6 +178,11 @@ public class Game {
         diceRoll = -1;
         isDiceRolled = false;
         currentPlayerID = (currentPlayerID + 1) % (playerController.getAllPlayers().size() + 1);
+        if (currentPlayerID == 0) {
+            currentPlayerID = 1;
+            System.out.println("\nNEXT ROUND");
+        }
+
         currentPlayer = playerController.getAllPlayers().get(currentPlayerID - 1);
         isHumanPlayersTurn = playerController.isHumanPlayer(currentPlayerID - 1);
         if (isHumanPlayersTurn) {
@@ -146,20 +192,12 @@ public class Game {
         }
     }
 
-    public boolean isValidMove(Piece piece, int diceRoll) {
+    public boolean isValidTarget(Piece piece, int diceRoll) {
         Tile targetTile = piece.getTargetTile(diceRoll);
 
         return targetTile == null ||  // player would run over last goal tile
                targetTile.getPiece() == null ||
                targetTile.getPiece().getOwner().getPlayerID() == currentPlayerID; // player would hit himself
-    }
-
-    public Boolean isGameStarted() {
-        return gameStarted;
-    }
-
-    public Playfield getPlayfield() {
-        return playfield;
     }
 
     public int checkForWin() {
@@ -182,11 +220,15 @@ public class Game {
     public void rollDice() {
         diceRoll = (int)(Math.random() * 6 + 1);
         isDiceRolled = true;
-        System.out.println("Es wurde eine " + diceRoll + " gewürfelt");
+        System.out.println("\t ... es wurde eine " + diceRoll + " gewürfelt");
     }
 
-    public boolean isDiceRolled() {
-        return isDiceRolled;
+    public Boolean isGameStarted() {
+        return gameStarted;
+    }
+
+    public Playfield getPlayfield() {
+        return playfield;
     }
 
 }

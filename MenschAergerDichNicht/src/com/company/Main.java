@@ -19,7 +19,7 @@ public class Main {
         // atm just one human player
         playerController.addPlayer(new HumanPlayer("Human", 1, playfield.getNumPiecesOfPlayer(1), playfield));
         for (int i=0; i<playfield.getNumPlayers() - 1; i++) {
-            playerController.addPlayer(new KIPlayer("KI", i+2, playfield.getNumPiecesOfPlayer(i+2), playfield));
+            playerController.addPlayer(new KIPlayer("KI" + i+2, i+2, playfield.getNumPiecesOfPlayer(i+2), playfield));
         }
 
         // create the game

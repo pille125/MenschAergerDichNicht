@@ -31,8 +31,14 @@ public class Player {
         findOwnStartTile(playfield);
         findOwnHomeTiles(playfield);
 
-        for (int i=0; i<numPieces; i++) {
-            setPieceToHome(new Piece(this));
+        // connect home tile to start tile
+        for (Tile homeTile : homeTiles) {
+            homeTile.setNext(startTile);
+        }
+
+        // set pieces on home tiles
+        for (Piece piece : pieces) {
+            setPieceToHome(piece);
         }
     }
 
