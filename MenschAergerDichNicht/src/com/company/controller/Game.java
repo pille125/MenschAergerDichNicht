@@ -164,8 +164,9 @@ public class Game {
 
             // only out pieces and valid moves
             if (piece.getTile().getType() == TileType.HOME ||
-                    !isValidTarget(piece, diceRoll))
+                    !isValidTarget(piece, diceRoll)) {
                 return false;
+            }
 
             piece.moveBy(diceRoll);
             return true;

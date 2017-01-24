@@ -70,6 +70,8 @@ public class Piece {
                 } else {
                     tile = tile.getNext();
                 }
+            }else {
+                tile = tile.getNext();
             }
 
             if (diceRoll == 1) {  // this was the last step
