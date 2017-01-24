@@ -18,6 +18,9 @@ public class PlayfieldPanel extends JPanel implements MouseListener {
     private Game game = null;
     private Playfield playfield = null;
 
+    // for correct mouse clicks
+    private int sizePerPiece = 0;
+
     public PlayfieldPanel(Game game, Playfield playfield) {
         this.game = game;
         this.playfield = playfield;
@@ -27,11 +30,13 @@ public class PlayfieldPanel extends JPanel implements MouseListener {
         startButton = new JButton("Spiel Starten");
         startButton.setToolTipText("Spiel starten.");
         startButton.setEnabled(true);
+        startButton.setVisible(true);
         add(startButton);
 
         rollDiceButton = new JButton("Würfeln");
         rollDiceButton.setToolTipText("Würfeln");
-        rollDiceButton.setEnabled(true);
+        rollDiceButton.setEnabled(false);
+        rollDiceButton.setVisible(false);
         add(rollDiceButton);
 
         addMouseListener(this);
@@ -40,11 +45,14 @@ public class PlayfieldPanel extends JPanel implements MouseListener {
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
+                        startButton.setVisible(false);
+                        startButton.setEnabled(false);
+                        rollDiceButton.setEnabled(true);
+                        rollDiceButton.setVisible(true);
                         game.onStartButtonClicked(e);
                     }
                 }
         );
-
         rollDiceButton.addActionListener(
                 new ActionListener() {
                     @Override
@@ -60,16 +68,17 @@ public class PlayfieldPanel extends JPanel implements MouseListener {
         super.paintComponent(gfx);
 
         Graphics2D gfx2D = (Graphics2D) gfx;
-        Color tmpColor = gfx2D.getColor();
+        Color oldColor = gfx2D.getColor();
         gfx2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         paintPlayfield(gfx2D);
 
-        gfx2D.setColor(tmpColor);
+        gfx2D.setColor(oldColor);
     }
 
     private void paintPlayfield(Graphics2D gfx2D) {
-        int size = this.getWidth() / this.playfield.getNumColumns();
+        // update this always
+        sizePerPiece = this.getWidth() / this.playfield.getNumColumns();
         
         for (int i = 0; i < this.playfield.getNumRows(); i++) {
             for (int j = 0; j < playfield.getNumColumns(); j++) {
@@ -81,12 +90,18 @@ public class PlayfieldPanel extends JPanel implements MouseListener {
 
                 // paint a colored tile with black border
                 gfx2D.setColor(currentColor);
-                gfx2D.fillOval(j * size + size / 10, i * size + size / 10, size - size / 5, size - size / 5);
+                gfx2D.fillOval(
+                        j * sizePerPiece + sizePerPiece / 10, i * sizePerPiece + sizePerPiece / 10,
+                        sizePerPiece - sizePerPiece / 5, sizePerPiece - sizePerPiece / 5
+                );
                 gfx2D.setColor(Color.BLACK);
-                gfx2D.drawOval(j * size + size / 10, i * size + size / 10, size - size / 5, size - size / 5);
+                gfx2D.drawOval(
+                        j * sizePerPiece + sizePerPiece / 10, i * sizePerPiece + sizePerPiece / 10,
+                        sizePerPiece - sizePerPiece / 5, sizePerPiece - sizePerPiece / 5
+                );
 
                 if (tile.getPiece() != null) {
-                    paintPiece(gfx2D, tile, i, j, size);
+                    paintPiece(gfx2D, tile, i, j, sizePerPiece);
                 }
             }
         }
@@ -126,6 +141,10 @@ public class PlayfieldPanel extends JPanel implements MouseListener {
         else if (id == 3) color = Color.CYAN;
         else if (id == 4) color = Color.YELLOW;
         return color;
+    }
+
+    public int getSizePerPiece() {
+        return sizePerPiece;
     }
 
     @Override

@@ -47,21 +47,14 @@ public class Game {
         if (!isGameStarted())
             return;
 
-        // TODO: die mouse klicks werden prinzipiell richtig umgerechnet
-        // TODO: allerdings ist getHeight() nicht richtig, wenn das spielfeld nicht genau passt
-        // TODO: (setPreferredDim blödsinn)
-        // TODO: die mouse daten gehen bis zum "boden", die tiles aber nicht
-        // TODO: dadurch sind die mouse x leicht verschoben (siehe mit println weiter unten)
-        // TODO: wenn man das fenster händisch so anpasst, daß das spielfeld richtig drinne sitzt,
-        // TODO: stimmen die mausdaten
-        int row    = event.getY() * playfield.getNumRows() / panel.getHeight();
-        int column = event.getX() * playfield.getNumColumns() / panel.getWidth();
+        int row    = event.getY() / panel.getSizePerPiece();
+        int column = event.getX() / panel.getSizePerPiece();
 
         if (row    < 0 || row    >= playfield.getNumRows() ||
             column < 0 || column >= playfield.getNumColumns())
             return;
 
-        System.out.println("mx: " + row + " my: " + column); // good for debug // TODO: hier
+        System.out.println("row: " + row + " column: " + column);
         Tile clickedTile = playfield.getTile(row, column);
         if (!clickedTile.hasPiece())
             return;

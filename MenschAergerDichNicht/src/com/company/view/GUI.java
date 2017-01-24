@@ -47,11 +47,14 @@ public class GUI {
         this.playfieldPanel = new PlayfieldPanel(game, playfield);
 
         int size = Math.min(this.playfieldPanel.getWidth(), this.playfieldPanel.getHeight());
+        int width = this.playfieldPanel.getWidth();
+        int height = this.playfieldPanel.getHeight();
+
         Dimension dim = new Dimension(
-                size - (size % this.playfield.getNumColumns()),
-                size - (size % this.playfield.getNumRows())
+                width  - (width % this.playfield.getNumColumns()),
+                height - (height % this.playfield.getNumRows())
         );
-        this.playfieldPanel.setPreferredSize(dim);
+        //this.playfieldPanel.setPreferredSize(dim);
         this.playfieldPanel.setSize(dim);
         this.playfieldPanel.validate();
     }
