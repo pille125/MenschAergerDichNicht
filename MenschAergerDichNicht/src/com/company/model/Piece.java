@@ -28,27 +28,69 @@ public class Piece {
         this.tile = owner.getStartTile();
     }
 
-    //move piece
-    public void moveBy(int diceThrow) {
+    // look ahead function, does not change any tile or piece!
+    public Tile getTargetTile(int diceRoll) {
+        Tile targetTile = tile;
+        while (diceRoll > 0) {
+
+            // grab the correct next tile
+            if (targetTile.getType() == TileType.HOME) {
+                targetTile = owner.getStartTile();
+            } else if (targetTile.getType() == TileType.TOGOAL) {
+
+                if (targetTile.getPlayerID() == owner.getPlayerID()) { // our to goal switch
+                    targetTile = targetTile.getGoal();
+                } else {
+                    targetTile = targetTile.getNext();
+                }
+            }
+            if (targetTile == null) // run over last goal
+                break;
+
+            diceRoll--;
+        }
+        return targetTile;  // tile to inspect by game logic
+    }
+
+    //move piece, this really changes states
+    public void moveBy(int diceRoll) {
         tile.setPiece(null);
 
-        while (diceThrow > 0) {
+        while (diceRoll > 0) {
 
-            if (tile.getType() == TileType.HOME)
+            // grab the correct next tile
+            if (tile.getType() == TileType.HOME) {
                 tile = owner.getStartTile();
-            else
-                tile = tile.getNext();
+            } else if (tile.getType() == TileType.TOGOAL) {
 
-            diceThrow--;
+                if (tile.getPlayerID() == owner.getPlayerID()) { // our to goal switch
+                    tile = tile.getGoal();
+                } else {
+                    tile = tile.getNext();
+                }
+            }
+
+            if (diceRoll == 1) {  // this was the last step
+                if (tile.hasPiece()) { // enemy piece
+                    tile.getPiece().getOwner().setPieceToHome(tile.getPiece());
+                }
+            }
+
+            diceRoll--;
         }
 
         tile.setPiece(this);
     }
 
-    //put piece back to home, if piece was hit
-    public void removePiece() {
-        tile.setPiece(null);
-        owner.setPieceToHome(this);
+    // move a piece from one tile to another
+    // this is no game move
+    public void move(Tile toTile) {
+        if (toTile.hasPiece()) {
+            throw new Error("handle piece on this tile first");
+        }
+
+        tile.setPiece(null);    // remove piece from this tile
+        toTile.setPiece(this);  // set it to new tile
     }
 
     //return true if piece is close to finish

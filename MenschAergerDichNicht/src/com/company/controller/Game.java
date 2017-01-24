@@ -17,8 +17,13 @@ public class Game {
     private GUI gui;
     private Playfield playfield;
 
+    // game logic
     private Boolean gameStarted = false;
-    private int currentPlayer = 0;
+    private int currentPlayerID = 0;
+    private Player currentPlayer = null;
+    private boolean isHumanPlayersTurn = false;
+    private boolean isDiceRolled = false;
+    private int diceRoll = 0;
 
     public Game(PlayerController playerController, Playfield playField) {
         this.playerController = playerController;
@@ -29,27 +34,25 @@ public class Game {
     public void setGUI(GUI gui) { this.gui = gui; }
 
     public void onStartButtonClicked(ActionEvent event) {
+        gui.disableStartGame();
         startGame();
     }
 
     public void onRollDiceButtonClicked(ActionEvent event) {
-        int roll = playerController.getHumanPlayer().rollDice();
-        System.out.println("Der Spieler hat eine " + roll + " gewürfelt");
-        if (roll == 6) {
-            //Wenn möglich muss eine Spielfigur auf die start position
-        } else {
-
-            //warte auf MouseClick (defintition welche Spielfigur sich bewegen soll
-        }
+        rollDice();
+        gui.disableDiceRoll();
     }
 
     public void onMouseClicked(MouseEvent event, PlayfieldPanel panel) {
         if (!isGameStarted())
             return;
 
+        if (!isDiceRolled)
+            return;
+
+        // grab input
         int row    = event.getY() / panel.getSizePerPiece();
         int column = event.getX() / panel.getSizePerPiece();
-
         if (row    < 0 || row    >= playfield.getNumRows() ||
             column < 0 || column >= playfield.getNumColumns())
             return;
@@ -59,63 +62,106 @@ public class Game {
         if (!clickedTile.hasPiece())
             return;
 
-        // TODO: jetzt kannste hier die game logic einbauen, have fun,
-        // TODO: wenn irgendwo exceptions kommen, ist die spiellogik nicht gut genug (really)
-        // TODO: wenn zb ein TIle kein next hat, dann den typ anschauen. HOME-Tiles haben kein next,
-        // TODO: und ein GOAL (das hinterste) auch nicht
-        // TODO: man muss hier prüfen, ob ein zug legal ist, nicht in den Piece und Tile klassen
-        if (playerController.getHumanPlayer().isDiceRolled()) {
-            int diceRoll = playerController.getHumanPlayer().getLastDiceRoll();
+        // player rolled dice, click on a own piece to move it if legal
+        Piece clickedPiece = clickedTile.getPiece();
+        if (clickedPiece.getOwner() != currentPlayer) // not our piece
+            return;
 
-            // man muß nicht unbedingt einen rausziehen oder ist das pflicht?
-            if (diceRoll == 6) {
-                playerController.getHumanPlayer().putAvailableHomePieceOut();
-            } else {
-                clickedTile.getPiece().moveBy(diceRoll);
-            }
-            playerController.getHumanPlayer().setDiceRolled(false);
+        if (diceRoll == 6 &&
+            clickedPiece.getTile().getType() == TileType.HOME &&
+            isValidMove(clickedPiece, 1)) { // hack to target start pos
+
+            clickedPiece.moveBy(1);
+            prepareBonusRoll();
+            return;
         }
-        else {
-            // TODO
+
+        if (diceRoll != 6 &&
+            clickedPiece.getTile().getType() != TileType.HOME &&
+            isValidMove(clickedPiece, diceRoll)) {
+
+            clickedTile.getPiece().moveBy(diceRoll);
+            prepareNextPlayer();
+            return;
         }
     }
 
     public void startGame() {
+        // TODO: clear all playfield tiles
+        // TODO: reset the players
+
+        // initialize a new game
         gameStarted = true;
+        diceRoll = -1;
+        isDiceRolled = false;
+        currentPlayerID = 0; // player ids start at 1
+        prepareNextPlayer();
+
+        System.out.println("GAME STARTED");
+        turn();
     }
 
-    public void playGame() {
-        while (gameStarted == true) {
-            if (checkForWin() == -1) {
-                //no winner
-            }else {
-                gameStarted = false;
-            }
+    public void turn() {
+        System.out.println("turn player " + currentPlayerID + " " +
+                (isHumanPlayersTurn ? "HUMAN" : "KI") + gui.getPlayerColor(currentPlayerID));
+        if (isHumanPlayersTurn)
+            return; // mouse and button actions will resolve turn
 
+        // ki here, resolve the move
+        rollDice();
+
+        // make a move
+        for (Piece piece : currentPlayer.getPieces()) {
+            if (isValidMove(piece, diceRoll)) {
+
+                // if its a valid move and a piece is on the to be moved tile
+                // its a legal hit
+                piece.moveBy(diceRoll);
+
+                // TODO: handle bonus roll for ki
+                // prepareBonusRoll();
+
+                prepareNextPlayer();
+            }
         }
+    }
+
+    private void prepareBonusRoll () {
+        diceRoll = -1;
+        isDiceRolled = false;
+        if (isHumanPlayersTurn) {
+            gui.enableDiceRoll();
+        } else {
+            gui.disableDiceRoll();
+        }
+    }
+
+    public void prepareNextPlayer() {
+        diceRoll = -1;
+        isDiceRolled = false;
+        currentPlayerID = (currentPlayerID + 1) % (playerController.getAllPlayers().size() + 1);
+        currentPlayer = playerController.getAllPlayers().get(currentPlayerID - 1);
+        isHumanPlayersTurn = playerController.isHumanPlayer(currentPlayerID - 1);
+        if (isHumanPlayersTurn) {
+            gui.enableDiceRoll();
+        } else {
+            gui.disableDiceRoll();
+        }
+    }
+
+    public boolean isValidMove(Piece piece, int diceRoll) {
+        Tile targetTile = piece.getTargetTile(diceRoll);
+
+        return targetTile == null ||  // player would run over last goal tile
+               targetTile.getPiece().getOwner().getPlayerID() == currentPlayerID; // player would hit himself
     }
 
     public Boolean isGameStarted() {
         return gameStarted;
     }
 
-    public int getCurrentPlayer() {
-        return currentPlayer;
-    }
-
-    public PlayerController getPlayerController() {
-        return playerController;
-    }
     public Playfield getPlayfield() {
         return playfield;
-    }
-
-    public void nextPlayer() {
-        if (currentPlayer < playerController.getAllPlayers().size()) {
-            currentPlayer++;
-        }else {
-            currentPlayer = 0;
-        }
     }
 
     public int checkForWin() {
@@ -135,5 +181,14 @@ public class Game {
         return -1;
     }
 
+    public void rollDice() {
+        diceRoll = (int)(Math.random() * 6 + 1);
+        isDiceRolled = true;
+        System.out.println("Es wurde eine " + diceRoll + " gewürfelt");
+    }
+
+    public boolean isDiceRolled() {
+        return isDiceRolled;
+    }
 
 }

@@ -71,4 +71,24 @@ public class GUI {
             this.playfieldPanel.repaint();
         }
     }
+
+    public void enableDiceRoll() {
+        playfieldPanel.enableDiceRoll();
+    }
+
+    public void disableDiceRoll() {
+        playfieldPanel.disableDiceRoll();
+    }
+
+    public void enableStartGame() {
+        playfieldPanel.enableStartGame();
+    }
+
+    public void disableStartGame() {
+        playfieldPanel.disableStartGame();
+    }
+
+    public Color getPlayerColor(int playerID) {
+        return playfieldPanel.getPlayerColor(playerID);
+    }
 }

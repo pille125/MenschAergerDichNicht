@@ -21,6 +21,10 @@ public class PlayerController {
         this.allPlayers.add(player);
     }
 
+    public boolean isHumanPlayer(int playerID) {
+        return allPlayers.get(playerID) instanceof HumanPlayer;
+    }
+
     public Vector<Player> getAllPlayers() {
         return allPlayers;
     }

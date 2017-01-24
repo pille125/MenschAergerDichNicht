@@ -15,8 +15,6 @@ public class Player {
     protected int playerID = -1;
     protected String name = null;
 
-    protected Boolean diceRolled = false;
-    protected int lastDiceRoll = 0;
     protected Tile startTile;
     protected ArrayList<Tile> homeTiles = new ArrayList<Tile>();
 
@@ -88,20 +86,6 @@ public class Player {
         return this.playerID;
     }
 
-    public Boolean putAvailableHomePieceOut() {
-        for (Tile homeTile : homeTiles) {
-            if (homeTile.hasPiece()) {
-                homeTile.getPiece().goOut();
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public int getLastDiceRoll() {
-        return this.lastDiceRoll;
-    }
-
     public String getName() {
         return this.name;
     }
@@ -124,22 +108,4 @@ public class Player {
         }
         return true;
     }
-
-    public int rollDice() {
-        diceRolled = true;
-        lastDiceRoll = (int)(Math.random() * 6 + 1);
-        return lastDiceRoll;
-    }
-    public Boolean isDiceRolled() {
-        return diceRolled;
-    }
-
-    public void setDiceRolled(Boolean diceRolled) {
-        this.diceRolled = diceRolled;
-    }
-
-    public void moveComplete() {
-        diceRolled = false;
-    }
-
 }

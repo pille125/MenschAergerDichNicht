@@ -45,10 +45,6 @@ public class PlayfieldPanel extends JPanel implements MouseListener {
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        startButton.setVisible(false);
-                        startButton.setEnabled(false);
-                        rollDiceButton.setEnabled(true);
-                        rollDiceButton.setVisible(true);
                         game.onStartButtonClicked(e);
                     }
                 }
@@ -134,7 +130,7 @@ public class PlayfieldPanel extends JPanel implements MouseListener {
         return currentColor;
     }
 
-    private Color getPlayerColor(int id) {
+    public Color getPlayerColor(int id) {
         Color color = Color.WHITE;
         if      (id == 1) color = Color.GREEN;
         else if (id == 2) color = Color.RED;
@@ -145,6 +141,27 @@ public class PlayfieldPanel extends JPanel implements MouseListener {
 
     public int getSizePerPiece() {
         return sizePerPiece;
+    }
+
+    public void enableDiceRoll() {
+        rollDiceButton.setEnabled(true);
+        rollDiceButton.setVisible(true);
+    }
+
+    public void disableDiceRoll() {
+        rollDiceButton.setEnabled(false);
+        rollDiceButton.setVisible(false);
+    }
+
+    public void enableStartGame() {
+        startButton.setEnabled(true);
+        startButton.setVisible(true);
+        disableDiceRoll();
+    }
+
+    public void disableStartGame() {
+        startButton.setEnabled(false);
+        startButton.setVisible(false);
     }
 
     @Override
