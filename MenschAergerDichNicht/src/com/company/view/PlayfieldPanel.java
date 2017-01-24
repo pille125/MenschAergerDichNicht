@@ -28,15 +28,20 @@ public class PlayfieldPanel extends JPanel implements MouseListener {
         this.playfield = playfield;
 
         setBackground(Color.WHITE);
+        setLayout(null);
 
         startButton = new JButton("Spiel Starten");
         startButton.setToolTipText("Spiel starten.");
+        startButton.setBounds(250,500,100,60);
         startButton.setEnabled(true);
         startButton.setVisible(true);
+
+
         add(startButton);
 
         rollDiceButton = new JButton("Würfeln");
         rollDiceButton.setToolTipText("Würfeln");
+        rollDiceButton.setBounds(250,500,100,60);
         rollDiceButton.setEnabled(false);
         rollDiceButton.setVisible(false);
         add(rollDiceButton);
