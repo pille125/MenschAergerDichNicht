@@ -129,9 +129,9 @@ public class PlayfieldPanel extends JPanel implements MouseListener {
     private void paintPiece(Graphics2D gfx2D, Tile tile, int i, int j, int size) {
         Color currentColor = getPlayerColor(tile.getPiece().getOwner().getPlayerID());
 
-        gfx2D.setColor(currentColor);
-        gfx2D.fillOval(j*size + size / 4, i*size + size / 4, size / 2, size / 2);
         gfx2D.setColor(currentColor.darker());
+        gfx2D.fillOval(j*size + size / 4, i*size + size / 4, size / 2, size / 2);
+        gfx2D.setColor(currentColor.darker().darker());
         gfx2D.fillOval(j*size + size / 3, i*size + size / 3, size / 3, size / 3);
     }
 
