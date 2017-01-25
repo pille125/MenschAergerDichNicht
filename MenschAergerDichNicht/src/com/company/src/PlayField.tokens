@@ -1,0 +1,10 @@
+Separator=1
+LineBreak=2
+SimpleValue=3
+WayValue=4
+StartValue=5
+GoalValue=6
+ToGoalValue=7
+HomeValue=8
+';'=1
+'NO'=3

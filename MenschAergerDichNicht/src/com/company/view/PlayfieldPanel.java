@@ -17,6 +17,8 @@ public class PlayfieldPanel extends JPanel implements MouseListener {
     private JButton startButton = null;
     private JButton rollDiceButton = null;
 
+    private JLabel rollLabel = null;
+
     private Game game = null;
     private Playfield playfield = null;
 

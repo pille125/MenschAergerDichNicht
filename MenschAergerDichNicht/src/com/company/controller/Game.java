@@ -104,6 +104,10 @@ public class Game {
         System.out.println("Player " + player.getPlayerID() + " has won! kthxbye ...");
     }
 
+    public int getDiceRoll() {
+        return diceRoll;
+    }
+
     // all in home, no 6
     private boolean cantMoveOut() {
         return diceRoll != 6 && !currentPlayer.hasPieceOut();
@@ -162,7 +166,7 @@ public class Game {
     }
     // applies the rules and returns the success
     public boolean tryMove(Piece piece) {
-
+        if (piece.isCloseToFinish())
         // no 6 roll
         if (diceRoll != 6) {
 
