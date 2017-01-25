@@ -23,6 +23,8 @@ public class Playfield {
         }
 
         GEN_PlayfieldCreator.createPlayfield(this);
+
+        connectToGoalTiles();
     }
 
     //Singleton
@@ -39,6 +41,17 @@ public class Playfield {
         for (int i = 0; i < numRows; i++) {
             for (int j = 0; j < numColumns; j++) {
                 tiles[i][j] = new Tile();
+            }
+        }
+    }
+
+    private void connectToGoalTiles() {
+        for (int i = 0; i < numRows; i++) {
+            for (int j = 0; j < numColumns; j++) {
+                Tile tile = tiles[i][j];
+                if (tile.getType() == TileType.TOGOAL) {
+                    tile.setPlayerID(tile.getGoal().getPlayerID());
+                }
             }
         }
     }
