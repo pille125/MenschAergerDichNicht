@@ -37,6 +37,7 @@ public class Game {
         this.playfield = playField;
         this.gui = gui;
         gui.init(this);
+        gui.start();
     }
 
     public void onStartButtonClicked(ActionEvent event) {

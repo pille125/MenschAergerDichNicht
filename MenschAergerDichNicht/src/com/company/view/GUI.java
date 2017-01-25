@@ -58,8 +58,7 @@ public class GUI {
         this.playfieldPanel.validate();
     }
 
-    public void startGUI(Game game) {
-        this.game = game;
+    public void start() {
         this.window.pack();
         this.window.setVisible(true);
     }

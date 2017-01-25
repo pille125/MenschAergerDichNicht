@@ -26,15 +26,7 @@ public class Main {
         GUI gui = GUI.getInstance();
 
         // create the game
-        //Game game = new Game(playerController, playfield);
         Game game = Game.getInstance();
         game.init(playerController, playfield, gui);
-
-        // connect game with gui
-        //game.setGUI(gui);
-
-        // lets go
-        gui.startGUI(game);
-
     }
 }
