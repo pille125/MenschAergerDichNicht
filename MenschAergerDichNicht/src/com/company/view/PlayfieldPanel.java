@@ -3,6 +3,7 @@ package com.company.view;
 import com.company.controller.Game;
 import com.company.model.Playfield;
 import com.company.model.Tile;
+import com.company.model.TileType;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,14 +32,14 @@ public class PlayfieldPanel extends JPanel implements MouseListener {
 
         startButton = new JButton("Spiel Starten");
         startButton.setToolTipText("Spiel starten.");
-        startButton.setBounds(250,500,100,60);
+        startButton.setBounds(250,550,100,60);
         startButton.setEnabled(true);
         startButton.setVisible(true);
         add(startButton);
 
         rollDiceButton = new JButton("Würfeln");
         rollDiceButton.setToolTipText("Würfeln");
-        rollDiceButton.setBounds(250,500,100,60);
+        rollDiceButton.setBounds(250,550,100,60);
         rollDiceButton.setEnabled(false);
         rollDiceButton.setVisible(false);
         add(rollDiceButton);
@@ -99,6 +100,20 @@ public class PlayfieldPanel extends JPanel implements MouseListener {
                 gfx2D.fillOval(posx, posy, rad, rad);
                 gfx2D.setColor(Color.BLACK);
                 gfx2D.drawOval(posx, posy, rad, rad);
+
+                if (tile.getType() == TileType.START ||
+                    tile.getType() == TileType.TOGOAL ) {
+
+                    gfx2D.setColor(tile.getType() == TileType.TOGOAL ?
+                            getPlayerColor(tile.getGoal().getPlayerID()) :
+                            Color.BLACK
+                    );
+                    gfx2D.fillOval( // the method params are pure hell
+                            j*sizePerPiece + sizePerPiece / 3 + 3,
+                            i*sizePerPiece + sizePerPiece / 3 + 3,
+                            sizePerPiece / 5, sizePerPiece / 5
+                    );
+                }
 
                 // render pieces on tiles
                 if (tile.getPiece() != null) {
