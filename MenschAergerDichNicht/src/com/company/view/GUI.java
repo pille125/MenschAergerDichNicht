@@ -8,23 +8,24 @@ import java.awt.*;
 
 
 public class GUI {
+
     private static final Dimension WINDOW_MIN_DIM = new Dimension(600,650);
-
-    private static GUI gui = null;
-
     private JFrame window = null;
     private PlayfieldPanel playfieldPanel = null;
     private Game game = null;
     private Playfield playfield = null;
 
-    public static GUI getGUI(Game game) {
-        if(GUI.gui == null) {
-            GUI.gui = new GUI(game);
+    // singleton
+    private static GUI instance = null;
+    private GUI() {}
+    public static GUI getInstance() {
+        if (instance == null) {
+            instance = new GUI();
         }
-        return GUI.gui;
+        return instance;
     }
 
-    private GUI(Game game) {
+    public void init(Game game) {
         this.game = game;
         this.playfield = game.getPlayfield();
 
@@ -40,7 +41,6 @@ public class GUI {
         // render
         window.getContentPane().validate();
         window.getContentPane().repaint();
-        //repaintPlayfield();
     }
 
     private void setupPlayfieldPanel() {

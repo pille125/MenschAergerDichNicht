@@ -6,18 +6,19 @@ import com.company.model.Player;
 import java.util.Vector;
 
 public class PlayerController {
-    private static PlayerController instance;
+
     private Vector<Player> allPlayers = null;
 
-    private PlayerController() {
-        this.allPlayers = new Vector<Player>(0);
-    }
-
+    // singleton
+    private static PlayerController instance;
     public static PlayerController getInstance() {
         if (instance == null) {
             instance = new PlayerController();
         }
         return instance;
+    }
+    private PlayerController() {
+        this.allPlayers = new Vector<Player>(0);
     }
 
     public void addPlayer(Player player) {

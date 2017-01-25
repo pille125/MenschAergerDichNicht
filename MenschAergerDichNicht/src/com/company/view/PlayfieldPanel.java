@@ -200,7 +200,7 @@ public class PlayfieldPanel extends JPanel implements MouseListener {
     public void mouseClicked(MouseEvent event) {
 
         game.onMouseClicked(event, this);
-        GUI.getGUI(null).repaintPlayfield();
+        GUI.getInstance().repaintPlayfield();
     }
     @Override
     public void mouseEntered(MouseEvent e) {

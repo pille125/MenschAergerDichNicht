@@ -11,7 +11,7 @@ public class Main {
     public static void main(String[] args) {
 
         // create the playfield
-        Playfield playfield = Playfield.getInstance();
+        Playfield playfield = Playfield.getInstance(); // uses generated code
 
         // create the players
         PlayerController playerController = PlayerController.getInstance();
@@ -22,14 +22,16 @@ public class Main {
             playerController.addPlayer(new KIPlayer("KI", i+2, playfield.getNumPiecesOfPlayer(i+2), playfield));
         }
 
-        // create the game
-        Game game = new Game(playerController, playfield);
-
         // create the view
-        GUI gui = GUI.getGUI(game);
+        GUI gui = GUI.getInstance();
+
+        // create the game
+        //Game game = new Game(playerController, playfield);
+        Game game = Game.getInstance();
+        game.init(playerController, playfield, gui);
 
         // connect game with gui
-        game.setGUI(gui);
+        //game.setGUI(gui);
 
         // lets go
         gui.startGUI(game);

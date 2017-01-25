@@ -11,8 +11,8 @@ import java.awt.event.MouseEvent;
 public class Game {
 
     private PlayerController playerController;
-    private GUI gui;
     private Playfield playfield;
+    private GUI gui;
 
     // game logic
     private Boolean gameStarted = false;
@@ -22,14 +22,21 @@ public class Game {
     private boolean isDiceRolled = false;
     private int diceRoll = 0;
 
-    public Game(PlayerController playerController, Playfield playField) {
-        this.playerController = playerController;
-        this.playfield = playField;
-        this.gui = null;
+    // singleton
+    private static Game instance = null;
+    private Game() {}
+    public static Game getInstance() {
+        if (instance == null) {
+            instance = new Game();
+        }
+        return instance;
     }
 
-    public void setGUI(GUI gui) {
+    public void init(PlayerController playerController, Playfield playField, GUI gui) {
+        this.playerController = playerController;
+        this.playfield = playField;
         this.gui = gui;
+        gui.init(this);
     }
 
     public void onStartButtonClicked(ActionEvent event) {
