@@ -4,7 +4,18 @@ import com.company.model.Playfield;
 import com.company.model.TileType;
 import com.company.model.Tile;
 public class GEN_PlayfieldCreator {
-public static int getNumRows() { return 13;}public static int getNumColumns() { return 15;}public static int getNumPlayers() { return 4;}public static int getNumPiecesPerPlayer(int id) { if (id <= 4) {switch (id) {case 1: return 3;case 2: return 5;case 3: return 12;case 4: return 6;}}else throw new Error("player doesnt exist");return -1;}	public static void createPlayfield(Playfield playfield) {
+public static int getNumRows() { return 13;}
+public static int getNumColumns() { return 15;}
+public static int getNumPlayers() { return 4;}
+public static int getNumPiecesPerPlayer(int id) { if (id <= 4) {
+switch (id) {
+case 1: return 3;
+case 2: return 5;
+case 3: return 12;
+case 4: return 6;
+}}else throw new Error("player doesnt exist");
+return -1;}
+public static void createPlayfield(Playfield playfield) {
 playfield.setupTiles();
 playfield.getTile(0, 0).setType(TileType.HOME).setPlayerID(1);
 playfield.getTile(0, 1).setType(TileType.NONE);

@@ -81,7 +81,7 @@ public class PlayfieldPanel extends JPanel implements MouseListener {
         // update this always
         sizePerPiece = this.getWidth() / this.playfield.getNumColumns();
         
-        for (int i = 0; i < this.playfield.getNumRows(); i++) {
+        for (int i = 0; i < playfield.getNumRows(); i++) {
             for (int j = 0; j < playfield.getNumColumns(); j++) {
 
                 Tile tile = playfield.getTile(i, j);
@@ -91,15 +91,13 @@ public class PlayfieldPanel extends JPanel implements MouseListener {
 
                 int posx = j * sizePerPiece + sizePerPiece / 10;
                 int posy = i * sizePerPiece + sizePerPiece / 10;
-                int rad = sizePerPiece - sizePerPiece / 5;
-
-                int radius = sizePerPiece / 2;
+                int radius = sizePerPiece - sizePerPiece / 5;
 
                 // paint a colored tile with black border
                 gfx2D.setColor(currentColor);
-                gfx2D.fillOval(posx, posy, rad, rad);
+                gfx2D.fillOval(posx, posy, radius, radius);
                 gfx2D.setColor(Color.BLACK);
-                gfx2D.drawOval(posx, posy, rad, rad);
+                gfx2D.drawOval(posx, posy, radius, radius);
 
                 if (tile.getType() == TileType.START ||
                     tile.getType() == TileType.TOGOAL ) {
@@ -123,9 +121,8 @@ public class PlayfieldPanel extends JPanel implements MouseListener {
         }
     }
 
-    // hack, inperformant
     private Point findTilePos(Tile tile) {
-        for (int i = 0; i < this.playfield.getNumRows(); i++) {
+        for (int i = 0; i < playfield.getNumRows(); i++) {
             for (int j = 0; j < playfield.getNumColumns(); j++) {
                 if (tile == playfield.getTile(i, j)) {
                     return new Point(i, j);

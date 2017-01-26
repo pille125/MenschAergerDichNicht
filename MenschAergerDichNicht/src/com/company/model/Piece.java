@@ -1,10 +1,10 @@
 package com.company.model;
 
 public class Piece {
+
     private Player owner;
     private Tile tile;
 
-    //Constructor
     public Piece(Player owner) {
         this.owner = owner;
         this.tile = null;
@@ -13,6 +13,7 @@ public class Piece {
     public Tile getTile() {
         return tile;
     }
+
     public void setTile(Tile tile) {
         this.tile = tile;
     }

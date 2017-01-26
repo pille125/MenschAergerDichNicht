@@ -2,7 +2,6 @@ package com.company.model;
 
 
 public class Playfield {
-    private static Playfield instance = null;
 
     private Tile[][] tiles = null;
     private int numRows = 0;
@@ -10,7 +9,14 @@ public class Playfield {
     private int numPlayers = 0;
     private int numPiecesPerPlayer[];
 
-    //Constructor
+    // singleton
+    private static Playfield instance = null;
+    public static Playfield getInstance() {
+        if (instance == null) {
+            instance = new Playfield();
+        }
+        return instance;
+    }
     private Playfield() {
 
         numRows = GEN_PlayfieldCreator.getNumRows();
@@ -25,14 +31,6 @@ public class Playfield {
         GEN_PlayfieldCreator.createPlayfield(this);
 
         connectToGoalTiles();
-    }
-
-    //Singleton
-    public static Playfield getInstance() {
-        if (instance == null) {
-            instance = new Playfield();
-        }
-        return instance;
     }
 
     public void setupTiles() {

@@ -7,14 +7,12 @@ import java.util.Vector;
 public class Player {
 
     protected Vector<Piece> pieces = null;
-
     protected int playerID = -1;
     protected String name = null;
-
     protected Tile startTile;
     protected ArrayList<Tile> homeTiles = new ArrayList<Tile>();
 
-    //Constructor
+
     public Player(String name, int playerID, int numPieces, Playfield playfield) {
         this.name = name;
         this.playerID = playerID;

@@ -35,6 +35,7 @@ public class Tile {
     public TileType getType() {
         return type;
     }
+
     public Piece getPiece() {
         return piece;
     }

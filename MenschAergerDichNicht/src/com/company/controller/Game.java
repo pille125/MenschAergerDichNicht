@@ -10,6 +10,7 @@ import java.awt.event.MouseEvent;
 
 public class Game {
 
+    // mvc
     private PlayerController playerController;
     private Playfield playfield;
     private GUI gui;

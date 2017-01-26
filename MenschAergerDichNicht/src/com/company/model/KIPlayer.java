@@ -1,10 +1,10 @@
 package com.company.model;
 
-
 import java.util.ArrayList;
 
 
 public class KIPlayer extends Player {
+
     public KIPlayer(String name, int playerID, int numberOfPieces, Playfield playfield) {
         super(name, playerID, numberOfPieces, playfield);
     }
