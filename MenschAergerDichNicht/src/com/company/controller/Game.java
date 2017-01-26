@@ -37,8 +37,11 @@ public class Game {
         this.playerController = playerController;
         this.playfield = playField;
         this.gui = gui;
-        gui.init(this);
-        gui.start();
+
+        if (gui != null) {
+            gui.init(this);
+            gui.start();
+        }
     }
 
     public void onStartButtonClicked(ActionEvent event) {
@@ -111,6 +114,7 @@ public class Game {
 
     public void endGame(Player player) {
         System.out.println("Player " + player.getPlayerID() + " has won! kthxbye ...");
+        gameStarted = false;
     }
 
     // all in home, no 6
@@ -282,5 +286,7 @@ public class Game {
     public Playfield getPlayfield() {
         return playfield;
     }
+
+    public int getDiceRoll() { return diceRoll;}
 
 }
